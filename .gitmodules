@@ -6,3 +6,6 @@
 	path = mozilla-ca
 	url = https://github.com/Chia-Network/mozilla-ca.git
         branch = main
+[submodule "tree-blockchain-gui"]
+	path = tree-blockchain-gui
+	url = http://github.com/tree111-network/tree-blockchain-gui.git
