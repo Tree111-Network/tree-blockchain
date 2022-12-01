@@ -29,14 +29,14 @@ def coins_cmd(ctx: click.Context) -> None:
 @click.option(
     "-a",
     "--min-coin-amount",
-    help="Ignore coins worth less then this much XCH or CAT units",
+    help="Ignore coins worth less then this much TREE111 or CAT units",
     type=str,
     default="0",
 )
 @click.option(
     "-l",
     "--max-coin-amount",
-    help="Ignore coins worth more then this much XCH or CAT units",
+    help="Ignore coins worth more then this much TREE111 or CAT units",
     type=str,
     default="0",
 )
@@ -107,7 +107,7 @@ def list_cmd(
 @click.option(
     "-b",
     "--min-coin-amount",
-    help="Ignore coins worth less then this much XCH or CAT units",
+    help="Ignore coins worth less then this much TREE111 or CAT units",
     type=str,
     default="0",
 )
@@ -128,7 +128,7 @@ def list_cmd(
 @click.option(
     "-x",
     "--max-dust-amount",
-    help="Ignore coins worth more then this much XCH or CAT units",
+    help="Ignore coins worth more then this much TREE111 or CAT units",
     type=str,
     show_default=True,
     default="0.000001000000",  # 1000000 mojo
@@ -136,7 +136,7 @@ def list_cmd(
 @click.option(
     "-m",
     "--fee",
-    help="Set the fees for the transaction, in XCH",
+    help="Set the fees for the transaction, in TREE111",
     type=str,
     default="0",
     show_default=True,
@@ -202,7 +202,7 @@ def combine_cmd(
 @click.option(
     "-m",
     "--fee",
-    help="Set the fees for the transaction, in XCH",
+    help="Set the fees for the transaction, in TREE111",
     type=str,
     default="0",
     show_default=True,
@@ -211,7 +211,7 @@ def combine_cmd(
 @click.option(
     "-a",
     "--amount-per-coin",
-    help="The amount of each newly created coin, in XCH",
+    help="The amount of each newly created coin, in TREE111",
     type=str,
     required=True,
 )

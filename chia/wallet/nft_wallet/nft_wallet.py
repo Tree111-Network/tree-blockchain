@@ -569,7 +569,7 @@ class NFTWallet:
             name,
         )
 
-    async def create_tandem_xch_tx(
+    async def create_tandem_tree111_tx(
         self, fee: uint64, announcement_to_assert: Optional[Announcement] = None
     ) -> TransactionRecord:
         tree_coins = await self.standard_wallet.select_coins(fee)
@@ -696,7 +696,7 @@ class NFTWallet:
 
         if fee > 0:
             announcement_to_make = nft_coin.coin.name()
-            tree_tx = await self.create_tandem_xch_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
+            tree_tx = await self.create_tandem_tree111_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
         else:
             announcement_to_make = None
             tree_tx = None
@@ -859,7 +859,7 @@ class NFTWallet:
                     asset, coin_amount_needed, min_coin_amount, max_coin_amount
                 )
                 if len(offered_coins) == 0:
-                    raise ValueError(f"Did not have asset ID {asset.hex() if asset is not None else 'XCH'} to offer")
+                    raise ValueError(f"Did not have asset ID {asset.hex() if asset is not None else 'TREE111'} to offer")
                 offered_coins_by_asset[asset] = offered_coins
                 all_offered_coins.update(offered_coins)
 
@@ -869,7 +869,7 @@ class NFTWallet:
         )
         announcements_to_assert = Offer.calculate_announcements(notarized_payments, driver_dict)
         for asset, payments in royalty_payments.items():
-            if asset is None:  # xch offer
+            if asset is None:  # tree111 offer
                 offer_puzzle = OFFER_MOD
                 royalty_ph = OFFER_MOD_HASH
             else:
@@ -972,7 +972,7 @@ class NFTWallet:
                                 )
                             ).cons(inner_royalty_sol)
 
-                        if asset is None:  # xch offer
+                        if asset is None:  # tree111 offer
                             offer_puzzle = OFFER_MOD
                             royalty_ph = OFFER_MOD_HASH
                         else:
@@ -996,7 +996,7 @@ class NFTWallet:
                                     break
                         assert royalty_coin is not None
                         assert parent_spend is not None
-                        if asset is None:  # If XCH
+                        if asset is None:  # If TREE111
                             royalty_sol = inner_royalty_sol
                         else:
                             # call our drivers to solve the puzzle
@@ -1073,8 +1073,8 @@ class NFTWallet:
         target_list: Optional[List[bytes32]] = [],
         mint_number_start: Optional[int] = 1,
         mint_total: Optional[int] = None,
-        xch_coins: Optional[Set[Coin]] = None,
-        xch_change_ph: Optional[bytes32] = None,
+        tree111_coins: Optional[Set[Coin]] = None,
+        tree111_change_ph: Optional[bytes32] = None,
         new_innerpuzhash: Optional[bytes32] = None,
         new_p2_puzhash: Optional[bytes32] = None,
         did_coin: Optional[Coin] = None,
@@ -1088,7 +1088,7 @@ class NFTWallet:
           mint_number and mint_total for each NFT being minted. These
           intermediate coins then create the launcher coins for the list of NFTs
         - The launcher coins are then spent along with the created eve spend
-          and an xch spend that funds the transactions and pays fees.
+          and an tree111 spend that funds the transactions and pays fees.
         - There is also an option to pass in a list of target puzzlehashes. If
           provided this method will create an additional transaction transfering
           the minted NFTs to the row-matched target.
@@ -1097,9 +1097,9 @@ class NFTWallet:
         :param mint_number_start: [Optional] The starting point for mint number used in intermediate launcher
         puzzle. Default: 1
         :param mint_total: [Optional] The total number of NFTs being minted
-        :param xch_coins: [Optional] For use with bulk minting to provide the coin used for funding the minting spend.
+        :param tree111_coins: [Optional] For use with bulk minting to provide the coin used for funding the minting spend.
         This coin can be one that will be created in the future
-        :param xch_change_ph: [Optional] For use with bulk minting, so we can specify the puzzle hash that the change
+        :param tree111_change_ph: [Optional] For use with bulk minting, so we can specify the puzzle hash that the change
         from the funding transaction goes to.
         :param new_innerpuzhash: [Optional] The new inner puzzle hash for the DID once it is spent. For bulk minting we
         generally don't provide this as the default behaviour is to re-use the existing inner puzzle hash
@@ -1109,7 +1109,7 @@ class NFTWallet:
         be created in the future
         :param did_lineage_parent: [Optional]  The  parent coin to use for the lineage proof in the DID spend. Needed
         for bulk minting when the coin will be created in the future
-        :param fee: A fee amount, taken out of the xch spend.
+        :param fee: A fee amount, taken out of the tree111 spend.
         """
         # get DID Wallet
         for wallet_id in self.wallet_state_manager.wallets:
@@ -1150,12 +1150,12 @@ class NFTWallet:
             )
         ]
 
-        # Ensure we have an xch coin of high enough amount
+        # Ensure we have an tree111 coin of high enough amount
         assert isinstance(fee, uint64)
         total_amount = len(metadata_list) + fee
-        if xch_coins is None:
-            xch_coins = await self.standard_wallet.select_coins(uint64(total_amount))
-        assert len(xch_coins) > 0
+        if tree111_coins is None:
+            tree111_coins = await self.standard_wallet.select_coins(uint64(total_amount))
+        assert len(tree111_coins) > 0
 
         # set the chunk size for the spend bundle we're going to create
         chunk_size = len(metadata_list)
@@ -1277,38 +1277,38 @@ class NFTWallet:
             puzzle_assertions.add(assertion)
 
         # We've now created all the intermediate, launcher, eve and transfer spends.
-        # Create the xch spend to fund the minting.
-        spend_value = sum([coin.amount for coin in xch_coins])
+        # Create the tree111 spend to fund the minting.
+        spend_value = sum([coin.amount for coin in tree111_coins])
         change: uint64 = uint64(spend_value - total_amount)
-        xch_spends = []
-        if xch_change_ph is None:
-            xch_change_ph = await self.standard_wallet.get_new_puzzlehash()
-        xch_primaries = [
-            AmountWithPuzzlehash({"puzzlehash": xch_change_ph, "amount": change, "memos": [xch_change_ph]})
+        tree111_spends = []
+        if tree111_change_ph is None:
+            tree111_change_ph = await self.standard_wallet.get_new_puzzlehash()
+        tree111_primaries = [
+            AmountWithPuzzlehash({"puzzlehash": tree111_change_ph, "amount": change, "memos": [tree111_change_ph]})
         ]
 
         first = True
-        for xch_coin in xch_coins:
-            puzzle: Program = await self.standard_wallet.puzzle_for_puzzle_hash(xch_coin.puzzle_hash)
+        for tree111_coin in tree111_coins:
+            puzzle: Program = await self.standard_wallet.puzzle_for_puzzle_hash(tree111_coin.puzzle_hash)
             if first:
-                message_list: List[bytes32] = [c.name() for c in xch_coins]
+                message_list: List[bytes32] = [c.name() for c in tree111_coins]
                 message_list.append(
-                    Coin(xch_coin.name(), xch_primaries[0]["puzzlehash"], xch_primaries[0]["amount"]).name()
+                    Coin(tree111_coin.name(), tree111_primaries[0]["puzzlehash"], tree111_primaries[0]["amount"]).name()
                 )
                 message: bytes32 = std_hash(b"".join(message_list))
 
-                if len(xch_coins) > 1:
-                    xch_announcement: Optional[Set[bytes]] = {message}
+                if len(tree111_coins) > 1:
+                    tree111_announcement: Optional[Set[bytes]] = {message}
                 else:
-                    xch_announcement = None
+                    tree111_announcement = None
 
                 solution: Program = self.standard_wallet.make_solution(
-                    primaries=xch_primaries,
+                    primaries=tree111_primaries,
                     fee=fee,
-                    coin_announcements=xch_announcement,
+                    coin_announcements=tree111_announcement,
                     coin_announcements_to_assert={Announcement(did_coin.name(), message).name()},
                 )
-                primary_announcement_hash = Announcement(xch_coin.name(), message).name()
+                primary_announcement_hash = Announcement(tree111_coin.name(), message).name()
                 # connect this coin assertion to the DID announcement
                 did_coin_announcement = {bytes(message)}
                 first = False
@@ -1316,8 +1316,8 @@ class NFTWallet:
                 solution = self.standard_wallet.make_solution(
                     primaries=[], coin_announcements_to_assert={primary_announcement_hash}
                 )
-            xch_spends.append(CoinSpend(xch_coin, puzzle, solution))
-        xch_spend = await self.standard_wallet.sign_transaction(xch_spends)
+            tree111_spends.append(CoinSpend(tree111_coin, puzzle, solution))
+        tree111_spend = await self.standard_wallet.sign_transaction(tree111_spends)
 
         # Create the DID spend using the announcements collected when making the intermediate launcher coins
         did_p2_solution = self.standard_wallet.make_solution(
@@ -1361,31 +1361,31 @@ class NFTWallet:
         signed_spend_bundle = await did_wallet.sign(unsigned_spend_bundle)
 
         # Aggregate everything into a single spend bundle
-        total_spend = SpendBundle.aggregate([signed_spend_bundle, xch_spend, *eve_spends])
+        total_spend = SpendBundle.aggregate([signed_spend_bundle, tree111_spend, *eve_spends])
         return total_spend
 
-    async def mint_from_xch(
+    async def mint_from_tree111(
         self,
         metadata_list: List[Dict[str, Any]],
         target_list: Optional[List[bytes32]] = [],
         mint_number_start: Optional[int] = 1,
         mint_total: Optional[int] = None,
-        xch_coins: Optional[Set[Coin]] = None,
-        xch_change_ph: Optional[bytes32] = None,
+        tree111_coins: Optional[Set[Coin]] = None,
+        tree111_change_ph: Optional[bytes32] = None,
         fee: Optional[uint64] = uint64(0),
     ) -> SpendBundle:
         """
-        Minting NFTs from a single XCH spend using intermediate launcher puzzle
+        Minting NFTs from a single TREE111 spend using intermediate launcher puzzle
         :param metadata_list: A list of dicts containing the metadata for each NFT to be minted
         :param target_list: [Optional] a list of targets for transfering minted NFTs (aka airdrop)
         :param mint_number_start: [Optional] The starting point for mint number used in intermediate launcher
         puzzle. Default: 1
         :param mint_total: [Optional] The total number of NFTs being minted
-        :param xch_coins: [Optional] For use with bulk minting to provide the coin used for funding the minting spend.
+        :param tree111_coins: [Optional] For use with bulk minting to provide the coin used for funding the minting spend.
         This coin can be one that will be created in the future
-        :param xch_change_ph: [Optional] For use with bulk minting, so we can specify the puzzle hash that the change
+        :param tree111_change_ph: [Optional] For use with bulk minting, so we can specify the puzzle hash that the change
         from the funding transaction goes to.
-        :param fee: A fee amount, taken out of the xch spend.
+        :param fee: A fee amount, taken out of the tree111 spend.
         """
 
         # Ensure we have an mint_total value
@@ -1394,14 +1394,14 @@ class NFTWallet:
         assert isinstance(mint_number_start, int)
         assert len(metadata_list) <= mint_total + 1 - mint_number_start
 
-        # Ensure we have an xch coin of high enough amount
+        # Ensure we have an tree111 coin of high enough amount
         assert isinstance(fee, uint64)
         total_amount = len(metadata_list) + fee
-        if xch_coins is None:
-            xch_coins = await self.standard_wallet.select_coins(uint64(total_amount))
-        assert len(xch_coins) > 0
+        if tree111_coins is None:
+            tree111_coins = await self.standard_wallet.select_coins(uint64(total_amount))
+        assert len(tree111_coins) > 0
 
-        funding_coin = xch_coins.copy().pop()
+        funding_coin = tree111_coins.copy().pop()
 
         # set the chunk size for the spend bundle we're going to create
         chunk_size = len(metadata_list)
@@ -1412,7 +1412,7 @@ class NFTWallet:
         # chunk going into this spend bundle
         mint_number_end = mint_number_start + chunk_size
 
-        # Empty set to load with the announcements we will assert from XCH to
+        # Empty set to load with the announcements we will assert from TREE111 to
         # match the announcements from the intermediate launcher puzzle
         coin_announcements: Set[Any] = set()
         puzzle_assertions: Set[Any] = set()
@@ -1448,13 +1448,13 @@ class NFTWallet:
             )
             intermediate_coin_spends.append(intermediate_launcher_coin_spend)
 
-            # create an ASSERT_COIN_ANNOUNCEMENT for the XCH spend. The
+            # create an ASSERT_COIN_ANNOUNCEMENT for the TREE111 spend. The
             # intermediate launcher coin issues a CREATE_COIN_ANNOUNCEMENT of
             # the mint_number and mint_total for the launcher coin it creates
             intermediate_announcement_message = std_hash(int_to_bytes(mint_number) + int_to_bytes(mint_total))
             coin_announcements.add(std_hash(intermediate_launcher_coin.name() + intermediate_announcement_message))
 
-            # Create the launcher coin, and add its id to a list to be asserted in the XCH spend
+            # Create the launcher coin, and add its id to a list to be asserted in the TREE111 spend
             launcher_coin = Coin(intermediate_launcher_coin.name(), nft_puzzles.LAUNCHER_PUZZLE_HASH, amount)
             launcher_ids.append(launcher_coin.name())
 
@@ -1475,7 +1475,7 @@ class NFTWallet:
                 launcher_coin.name(), metadata["program"], NFT_METADATA_UPDATER.get_tree_hash(), inner_puzzle
             )
 
-            # Annnouncements for eve spend. These are asserted by the xch spend
+            # Annnouncements for eve spend. These are asserted by the tree111 spend
             announcement_message = Program.to([eve_fullpuz.get_tree_hash(), amount, []]).get_tree_hash()
             coin_announcements.add(std_hash(launcher_coin.name() + announcement_message))
 
@@ -1523,46 +1523,46 @@ class NFTWallet:
             puzzle_assertions.add(assertion)
 
         # We've now created all the intermediate, launcher, eve and transfer spends.
-        # Create the xch spend to fund the minting.
-        spend_value = sum([coin.amount for coin in xch_coins])
+        # Create the tree111 spend to fund the minting.
+        spend_value = sum([coin.amount for coin in tree111_coins])
         change: uint64 = uint64(spend_value - total_amount)
-        xch_spends = []
-        if xch_change_ph is None:
-            xch_change_ph = await self.standard_wallet.get_new_puzzlehash()
-        xch_primaries = [
-            AmountWithPuzzlehash({"puzzlehash": xch_change_ph, "amount": change, "memos": [xch_change_ph]})
+        tree111_spends = []
+        if tree111_change_ph is None:
+            tree111_change_ph = await self.standard_wallet.get_new_puzzlehash()
+        tree111_primaries = [
+            AmountWithPuzzlehash({"puzzlehash": tree111_change_ph, "amount": change, "memos": [tree111_change_ph]})
         ]
 
         first = True
-        for xch_coin in xch_coins:
-            puzzle: Program = await self.standard_wallet.puzzle_for_puzzle_hash(xch_coin.puzzle_hash)
+        for tree111_coin in tree111_coins:
+            puzzle: Program = await self.standard_wallet.puzzle_for_puzzle_hash(tree111_coin.puzzle_hash)
             if first:
-                message_list: List[bytes32] = [c.name() for c in xch_coins]
+                message_list: List[bytes32] = [c.name() for c in tree111_coins]
                 message_list.append(
-                    Coin(xch_coin.name(), xch_primaries[0]["puzzlehash"], xch_primaries[0]["amount"]).name()
+                    Coin(tree111_coin.name(), tree111_primaries[0]["puzzlehash"], tree111_primaries[0]["amount"]).name()
                 )
                 message: bytes32 = std_hash(b"".join(message_list))
 
-                if len(xch_coins) > 1:
-                    xch_announcement: Optional[Set[bytes]] = {message}
+                if len(tree111_coins) > 1:
+                    tree111_announcement: Optional[Set[bytes]] = {message}
                 else:
-                    xch_announcement = None
+                    tree111_announcement = None
 
                 solution: Program = self.standard_wallet.make_solution(
-                    primaries=xch_primaries + primaries,
+                    primaries=tree111_primaries + primaries,
                     fee=fee,
-                    coin_announcements=xch_announcement if len(xch_coins) > 1 else None,
+                    coin_announcements=tree111_announcement if len(tree111_coins) > 1 else None,
                     coin_announcements_to_assert=coin_announcements,
                     puzzle_announcements_to_assert=puzzle_assertions,
                 )
-                primary_announcement_hash = Announcement(xch_coin.name(), message).name()
+                primary_announcement_hash = Announcement(tree111_coin.name(), message).name()
                 first = False
             else:
                 solution = self.standard_wallet.make_solution(
                     primaries=[], coin_announcements_to_assert={primary_announcement_hash}
                 )
-            xch_spends.append(CoinSpend(xch_coin, puzzle, solution))
-        xch_spend = await self.standard_wallet.sign_transaction(xch_spends)
+            tree111_spends.append(CoinSpend(tree111_coin, puzzle, solution))
+        tree111_spend = await self.standard_wallet.sign_transaction(tree111_spends)
 
         # Collect up all the coin spends and sign them
         list_of_coinspends = intermediate_coin_spends + launcher_spends
@@ -1570,7 +1570,7 @@ class NFTWallet:
         signed_spend_bundle = await self.sign(unsigned_spend_bundle)
 
         # Aggregate everything into a single spend bundle
-        total_spend = SpendBundle.aggregate([signed_spend_bundle, xch_spend, *eve_spends])
+        total_spend = SpendBundle.aggregate([signed_spend_bundle, tree111_spend, *eve_spends])
         return total_spend
 
     async def select_coins(

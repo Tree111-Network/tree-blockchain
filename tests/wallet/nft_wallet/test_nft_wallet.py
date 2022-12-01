@@ -684,7 +684,7 @@ async def test_nft_with_did_wallet_creation(two_wallet_nodes: Any, trusted: Any)
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
             "uris": ["https://www.tree111.com/img/branding/tree-logo.svg"],
-            "target_address": encode_puzzle_hash(nft_ph, "txch"),
+            "target_address": encode_puzzle_hash(nft_ph, "ttree111"),
         }
     )
     assert resp.get("success")
@@ -967,7 +967,7 @@ async def test_nft_transfer_nft_with_did(two_wallet_nodes: Any, trusted: Any) ->
     resp = await api_0.nft_transfer_nft(
         dict(
             wallet_id=nft_wallet_0_id,
-            target_address=encode_puzzle_hash(ph1, "xch"),
+            target_address=encode_puzzle_hash(ph1, "tree111"),
             nft_coin_id=coins[0].nft_coin_id.hex(),
             fee=fee,
         )

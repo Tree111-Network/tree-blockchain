@@ -8,13 +8,13 @@ from tree.util.config import selected_network_address_prefix
 
 
 class AddressType(Enum):
-    XCH = "xch"
+    TREE111 = "tree111"
     NFT = "nft"
     DID = "did:tree:"
 
     def hrp(self, config: Dict[str, Any]) -> str:
-        if self == AddressType.XCH:
-            # Special case to map XCH to the current network's address prefix
+        if self == AddressType.TREE111:
+            # Special case to map TREE111 to the current network's address prefix
             return selected_network_address_prefix(config)
         return self.value
 

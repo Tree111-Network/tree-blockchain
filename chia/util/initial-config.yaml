@@ -72,24 +72,24 @@ network_overrides: &network_overrides
       MIN_PLOT_SIZE: 18
   config:
     mainnet:
-      address_prefix: "xch"
+      address_prefix: "tree111"
       default_full_node_port: 8444
     testnet0:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
       default_full_node_port: 58444
     testnet1:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
     testnet2:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
     testnet3:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
     testnet4:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
     testnet7:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
       default_full_node_port: 58444
     testnet10:
-      address_prefix: "txch"
+      address_prefix: "ttree111"
       default_full_node_port: 58444
 
 selected_network: &selected_network "mainnet"
@@ -204,7 +204,7 @@ harvester:
 
 pool:
   # Replace this with a real receive address
-  # xch_target_address: txch102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
+  # tree111_target_address: ttree111102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
@@ -224,7 +224,7 @@ farmer:
   pool_public_keys: []
 
   # Replace this with a real receive address
-  # xch_target_address: txch102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
+  # tree111_target_address: ttree111102gkhhzs60grx7cfnpng5n6rjecr89r86l5s8xux2za8k820cxsq64ssdg
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
@@ -549,9 +549,9 @@ wallet:
   tx_resend_timeout_secs: 1800
 
   # After n received unspent transactions, the spam filter will be enabled, which will filter out received
-  # coins with very small value. Any standard TX under xch_spam_amount is filtered
+  # coins with very small value. Any standard TX under tree111_spam_amount is filtered
   spam_filter_after_n_txs: 200
-  xch_spam_amount: 1000000
+  tree111_spam_amount: 1000000
   # Accept notifications from parties on chain
   accept_notifications: False
   # The amount someone has to pay you in mojos for you to see their notification
