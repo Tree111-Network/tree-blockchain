@@ -6,23 +6,23 @@ import pytest
 from blspy import AugSchemeMPL, G2Element, PrivateKey
 from clvm.casts import int_to_bytes
 
-from chia.clvm.spend_sim import SimClient, SpendSim
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.util.errors import Err
-from chia.util.ints import uint64
-from chia.wallet.cat_wallet.cat_utils import (
+from tree.clvm.spend_sim import SimClient, SpendSim
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.types.spend_bundle import SpendBundle
+from tree.util.errors import Err
+from tree.util.ints import uint64
+from tree.wallet.cat_wallet.cat_utils import (
     SpendableCAT,
     construct_cat_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
 )
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.puzzles.tails import DelegatedLimitations, EverythingWithSig, GenesisById, GenesisByPuzhash
+from tree.wallet.lineage_proof import LineageProof
+from tree.wallet.puzzles.cat_loader import CAT_MOD
+from tree.wallet.puzzles.tails import DelegatedLimitations, EverythingWithSig, GenesisById, GenesisByPuzhash
 from tests.clvm.benchmark_costs import cost_of_spend_bundle
 from tests.clvm.test_puzzles import secret_exponent_for_index
 

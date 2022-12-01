@@ -3,17 +3,17 @@ import logging
 import pytest
 from clvm.casts import int_to_bytes
 
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.types.announcement import Announcement
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.spend_bundle import SpendBundle
-from chia.util.errors import ConsensusError, Err
-from chia.util.ints import uint64
+from tree.protocols import full_node_protocol, wallet_protocol
+from tree.types.announcement import Announcement
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_with_args import ConditionWithArgs
+from tree.types.spend_bundle import SpendBundle
+from tree.util.errors import ConsensusError, Err
+from tree.util.ints import uint64
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 from tests.util.generator_tools_testing import run_and_get_removals_and_additions
-from chia.simulator.wallet_tools import WalletTool
-from chia.simulator.block_tools import test_constants
+from tree.simulator.wallet_tools import WalletTool
+from tree.simulator.block_tools import test_constants
 
 BURN_PUZZLE_HASH = b"0" * 32
 

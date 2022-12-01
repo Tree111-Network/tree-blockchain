@@ -9,21 +9,21 @@ from typing import Any, Dict, List, Optional, Type, Union, cast
 import aiohttp
 import pytest
 
-from chia.daemon.keychain_server import (
+from tree.daemon.keychain_server import (
     DeleteLabelRequest,
     GetKeyRequest,
     GetKeyResponse,
     GetKeysResponse,
     SetLabelRequest,
 )
-from chia.daemon.server import WebSocketServer, service_plotter
-from chia.server.outbound_message import NodeType
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint16
-from chia.util.keychain import KeyData
-from chia.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE
-from chia.util.ws_message import create_payload
+from tree.daemon.server import WebSocketServer, service_plotter
+from tree.server.outbound_message import NodeType
+from tree.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
+from tree.types.peer_info import PeerInfo
+from tree.util.ints import uint16
+from tree.util.keychain import KeyData
+from tree.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE
+from tree.util.ws_message import create_payload
 from tests.core.node_height import node_height_at_least
 
 
@@ -242,7 +242,7 @@ async def test_daemon_simulation(self_hostname, daemon_simulation):
 
     read_handler = asyncio.create_task(reader(ws, message_queue))
     data = {}
-    payload = create_payload("get_blockchain_state", data, service_name, "chia_full_node")
+    payload = create_payload("get_blockchain_state", data, service_name, "tree_full_node")
     await ws.send_str(payload)
 
     await asyncio.sleep(5)

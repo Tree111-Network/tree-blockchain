@@ -16,7 +16,7 @@ import click
     is_flag=True,
     help="Attempt to fix SSL certificate/key file permissions",
 )
-@click.option("--testnet", is_flag=True, help="Configure this chia install to connect to the testnet")
+@click.option("--testnet", is_flag=True, help="Configure this tree install to connect to the testnet")
 @click.option("--set-passphrase", "-s", is_flag=True, help="Protect your keyring with a passphrase")
 @click.option(
     "--v1-db",
@@ -30,16 +30,16 @@ def init_cmd(ctx: click.Context, create_certs: str, fix_ssl_permissions: bool, t
 
     \b
     Follow these steps to create new certificates for a remote harvester:
-    - Make a copy of your Farming Machine CA directory: ~/.chia/[version]/config/ssl/ca
-    - Shut down all chia daemon processes with `chia stop all -d`
-    - Run `chia init -c [directory]` on your remote harvester,
+    - Make a copy of your Farming Machine CA directory: ~/.tree/[version]/config/ssl/ca
+    - Shut down all tree daemon processes with `tree stop all -d`
+    - Run `tree init -c [directory]` on your remote harvester,
       where [directory] is the the copy of your Farming Machine CA directory
-    - Get more details on remote harvester on Chia wiki:
-      https://github.com/Chia-Network/chia-blockchain/wiki/Farming-on-many-machines
+    - Get more details on remote harvester on Tree wiki:
+      https://github.com/Tree111-Network/tree-blockchain/wiki/Farming-on-many-machines
     """
     from pathlib import Path
 
-    from chia.cmds.passphrase_funcs import initialize_passphrase
+    from tree.cmds.passphrase_funcs import initialize_passphrase
 
     from .init_funcs import init
 
@@ -57,8 +57,8 @@ def init_cmd(ctx: click.Context, create_certs: str, fix_ssl_permissions: bool, t
 
 
 if __name__ == "__main__":
-    from chia.util.default_root import DEFAULT_ROOT_PATH
+    from tree.util.default_root import DEFAULT_ROOT_PATH
 
-    from .init_funcs import chia_init
+    from .init_funcs import tree_init
 
-    chia_init(DEFAULT_ROOT_PATH)
+    tree_init(DEFAULT_ROOT_PATH)

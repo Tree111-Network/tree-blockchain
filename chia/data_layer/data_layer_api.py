@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import logging
 
-from chia.data_layer.data_layer import DataLayer
-from chia.server.server import ChiaServer
+from tree.data_layer.data_layer import DataLayer
+from tree.server.server import TreeServer
 
 
 class DataLayerAPI:
@@ -16,7 +16,7 @@ class DataLayerAPI:
     #     self.full_node.state_changed_callback = callback
 
     @property
-    def server(self) -> ChiaServer:
+    def server(self) -> TreeServer:
         return self.data_layer.server
 
     @property

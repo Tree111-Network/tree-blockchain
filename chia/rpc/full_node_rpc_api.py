@@ -5,29 +5,29 @@ from typing import Any, Dict, List, Optional
 
 from clvm.casts import int_from_bytes
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.cost_calculator import NPCResult
-from chia.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR
-from chia.full_node.fee_estimator_interface import FeeEstimatorInterface
-from chia.full_node.full_node import FullNode
-from chia.full_node.generator import setup_generator_args
-from chia.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
-from chia.rpc.rpc_server import Endpoint, EndpointResult
-from chia.server.outbound_message import NodeType
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.full_block import FullBlock
-from chia.types.generator_types import BlockGenerator
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.types.unfinished_header_block import UnfinishedHeaderBlock
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint32, uint64, uint128
-from chia.util.log_exceptions import log_exceptions
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
-from chia.wallet.puzzles.decompress_block_spends import DECOMPRESS_BLOCK_SPENDS
+from tree.consensus.block_record import BlockRecord
+from tree.consensus.cost_calculator import NPCResult
+from tree.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR
+from tree.full_node.fee_estimator_interface import FeeEstimatorInterface
+from tree.full_node.full_node import FullNode
+from tree.full_node.generator import setup_generator_args
+from tree.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
+from tree.rpc.rpc_server import Endpoint, EndpointResult
+from tree.server.outbound_message import NodeType
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.coin_spend import CoinSpend
+from tree.types.full_block import FullBlock
+from tree.types.generator_types import BlockGenerator
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.types.spend_bundle import SpendBundle
+from tree.types.unfinished_header_block import UnfinishedHeaderBlock
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.ints import uint32, uint64, uint128
+from tree.util.log_exceptions import log_exceptions
+from tree.util.ws_message import WsRpcMessage, create_payload_dict
+from tree.wallet.puzzles.decompress_block_spends import DECOMPRESS_BLOCK_SPENDS
 
 
 def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
@@ -38,7 +38,7 @@ def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
 class FullNodeRpcApi:
     def __init__(self, service: FullNode):
         self.service = service
-        self.service_name = "chia_full_node"
+        self.service_name = "tree_full_node"
         self.cached_blockchain_state: Optional[Dict] = None
 
     def get_routes(self) -> Dict[str, Endpoint]:

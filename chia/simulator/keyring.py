@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import Optional
 from unittest.mock import patch
 
-from chia.util.file_keyring import FileKeyring, keyring_path_from_root
-from chia.util.keychain import Keychain
-from chia.util.keyring_wrapper import KeyringWrapper
+from tree.util.file_keyring import FileKeyring, keyring_path_from_root
+from tree.util.keychain import Keychain
+from tree.util.keyring_wrapper import KeyringWrapper
 
 
 def setup_mock_file_keyring(mock_configure_backend, temp_file_keyring_dir, populate=False):
@@ -62,7 +62,7 @@ class TempKeyring:
         self,
         *,
         user: str = "testing-1.8.0",
-        service: str = "testing-chia-1.8.0",
+        service: str = "testing-tree-1.8.0",
         populate: bool = False,
         existing_keyring_path: Optional[str] = None,
         delete_on_cleanup: bool = True,
@@ -91,7 +91,7 @@ class TempKeyring:
         existing_keyring_dir = Path(existing_keyring_path).parent if existing_keyring_path else None
         temp_dir = existing_keyring_dir or tempfile.mkdtemp(prefix="test_keyring_wrapper")
 
-        mock_supports_os_passphrase_storage_patch = patch("chia.util.keychain.supports_os_passphrase_storage")
+        mock_supports_os_passphrase_storage_patch = patch("tree.util.keychain.supports_os_passphrase_storage")
         mock_supports_os_passphrase_storage = mock_supports_os_passphrase_storage_patch.start()
 
         # Patch supports_os_passphrase_storage() to return use_os_credential_store

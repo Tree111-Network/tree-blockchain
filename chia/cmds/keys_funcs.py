@@ -9,16 +9,16 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 
-from chia.cmds.passphrase_funcs import obtain_current_passphrase
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.config import load_config
-from chia.util.errors import KeychainException
-from chia.util.file_keyring import MAX_LABEL_LENGTH
-from chia.util.ints import uint32
-from chia.util.keychain import Keychain, bytes_to_mnemonic, generate_mnemonic, mnemonic_to_seed
-from chia.util.keyring_wrapper import KeyringWrapper
-from chia.wallet.derive_keys import (
+from tree.cmds.passphrase_funcs import obtain_current_passphrase
+from tree.consensus.coinbase import create_puzzlehash_for_pk
+from tree.util.bech32m import encode_puzzle_hash
+from tree.util.config import load_config
+from tree.util.errors import KeychainException
+from tree.util.file_keyring import MAX_LABEL_LENGTH
+from tree.util.ints import uint32
+from tree.util.keychain import Keychain, bytes_to_mnemonic, generate_mnemonic, mnemonic_to_seed
+from tree.util.keyring_wrapper import KeyringWrapper
+from tree.wallet.derive_keys import (
     master_sk_to_farmer_sk,
     master_sk_to_pool_sk,
     master_sk_to_wallet_sk,
@@ -47,7 +47,7 @@ def generate_and_print():
     mnemonic = generate_mnemonic()
     print("Generating private key. Mnemonic (24 secret words):")
     print(mnemonic)
-    print("Note that this key has not been added to the keychain. Run chia keys add")
+    print("Note that this key has not been added to the keychain. Run tree keys add")
     return mnemonic
 
 
@@ -97,7 +97,7 @@ def show_all_key_labels() -> None:
     keys = Keychain().get_keys()
 
     if len(keys) == 0:
-        sys.exit("No keys are present in the keychain. Generate them with 'chia keys generate'")
+        sys.exit("No keys are present in the keychain. Generate them with 'tree keys generate'")
 
     print_line("fingerprint", "label")
     print_line("-" * fingerprint_width, "-" * MAX_LABEL_LENGTH)
@@ -213,7 +213,7 @@ def derive_sk_from_hd_path(master_sk: PrivateKey, hd_path_root: str) -> Tuple[Pr
     and returns the derived key and the HD path that was used to derive it.
     """
 
-    from chia.wallet.derive_keys import _derive_path, _derive_path_unhardened
+    from tree.wallet.derive_keys import _derive_path, _derive_path_unhardened
 
     class DerivationType(Enum):
         NONOBSERVER = 0
@@ -295,7 +295,7 @@ def _search_derived(
     the provided search terms.
     """
 
-    from chia.wallet.derive_keys import _derive_path, _derive_path_unhardened
+    from tree.wallet.derive_keys import _derive_path, _derive_path_unhardened
 
     class DerivedSearchResultType(Enum):
         PUBLIC_KEY = "public key"
@@ -596,7 +596,7 @@ def derive_child_key(
     Derive child keys from the provided master key.
     """
 
-    from chia.wallet.derive_keys import _derive_path, _derive_path_unhardened
+    from tree.wallet.derive_keys import _derive_path, _derive_path_unhardened
 
     derivation_root_sk: Optional[PrivateKey] = None
     hd_path_root: Optional[str] = None

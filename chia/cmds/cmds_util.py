@@ -8,20 +8,20 @@ from typing import Any, AsyncIterator, Awaitable, Callable, Dict, List, Optional
 
 from aiohttp import ClientConnectorError
 
-from chia.daemon.keychain_proxy import KeychainProxy, connect_to_keychain_and_validate
-from chia.rpc.data_layer_rpc_client import DataLayerRpcClient
-from chia.rpc.farmer_rpc_client import FarmerRpcClient
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.rpc.harvester_rpc_client import HarvesterRpcClient
-from chia.rpc.rpc_client import RpcClient
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.mempool_submission_status import MempoolSubmissionStatus
-from chia.util.config import load_config
-from chia.util.default_root import DEFAULT_ROOT_PATH
-from chia.util.ints import uint16
-from chia.util.keychain import KeyData
-from chia.wallet.transaction_record import TransactionRecord
+from tree.daemon.keychain_proxy import KeychainProxy, connect_to_keychain_and_validate
+from tree.rpc.data_layer_rpc_client import DataLayerRpcClient
+from tree.rpc.farmer_rpc_client import FarmerRpcClient
+from tree.rpc.full_node_rpc_client import FullNodeRpcClient
+from tree.rpc.harvester_rpc_client import HarvesterRpcClient
+from tree.rpc.rpc_client import RpcClient
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.mempool_submission_status import MempoolSubmissionStatus
+from tree.util.config import load_config
+from tree.util.default_root import DEFAULT_ROOT_PATH
+from tree.util.ints import uint16
+from tree.util.keychain import KeyData
+from tree.wallet.transaction_record import TransactionRecord
 
 NODE_TYPES: Dict[str, Type[RpcClient]] = {
     "farmer": FarmerRpcClient,
@@ -38,7 +38,7 @@ def transaction_submitted_msg(tx: TransactionRecord) -> str:
 
 
 def transaction_status_msg(fingerprint: int, tx_id: bytes32) -> str:
-    return f"Run 'chia wallet get_transaction -f {fingerprint} -tx 0x{tx_id}' to get status"
+    return f"Run 'tree wallet get_transaction -f {fingerprint} -tx 0x{tx_id}' to get status"
 
 
 async def validate_client_connection(
@@ -122,7 +122,7 @@ async def get_wallet(root_path: Path, wallet_client: WalletRpcClient, fingerprin
         # we don't immediately close the keychain proxy connection because it takes a noticeable amount of time
         fingerprints = [key.fingerprint for key in all_keys]
         if len(fingerprints) == 0:
-            print("No keys loaded. Run 'chia keys generate' or import a key")
+            print("No keys loaded. Run 'tree keys generate' or import a key")
         elif len(fingerprints) == 1:
             # if only a single key is available, select it automatically
             selected_fingerprint = fingerprints[0]

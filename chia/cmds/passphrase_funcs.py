@@ -10,11 +10,11 @@ from typing import Any, Dict, Optional, Tuple
 
 import colorama
 
-from chia.daemon.client import acquire_connection_to_daemon
-from chia.util.errors import KeychainMaxUnlockAttempts
-from chia.util.keychain import Keychain, supports_os_passphrase_storage
-from chia.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE, KeyringWrapper
-from chia.util.misc import prompt_yes_no
+from tree.daemon.client import acquire_connection_to_daemon
+from tree.util.errors import KeychainMaxUnlockAttempts
+from tree.util.keychain import Keychain, supports_os_passphrase_storage
+from tree.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE, KeyringWrapper
+from tree.util.misc import prompt_yes_no
 
 DEFAULT_PASSPHRASE_PROMPT = (
     colorama.Fore.YELLOW + colorama.Style.BRIGHT + "(Unlock Keyring)" + colorama.Style.RESET_ALL + " Passphrase: "
@@ -117,7 +117,7 @@ def prompt_to_save_passphrase() -> bool:
             print(
                 "\n"
                 "Your passphrase can be stored in your system's secure credential store. "
-                "Other Chia processes will be able to access your keys without prompting for your passphrase."
+                "Other Tree processes will be able to access your keys without prompting for your passphrase."
             )
             if warning is not None:
                 colorama.init()
@@ -154,7 +154,7 @@ def prompt_for_new_passphrase() -> Tuple[str, bool]:
 
 
 def read_passphrase_from_file(passphrase_file: TextIOWrapper) -> str:
-    passphrase = passphrase_file.read().rstrip(os.environ.get("CHIA_PASSPHRASE_STRIP_TRAILING_CHARS", "\r\n"))
+    passphrase = passphrase_file.read().rstrip(os.environ.get("TREE_PASSPHRASE_STRIP_TRAILING_CHARS", "\r\n"))
     passphrase_file.close()
     return passphrase
 
@@ -162,7 +162,7 @@ def read_passphrase_from_file(passphrase_file: TextIOWrapper) -> str:
 def initialize_passphrase() -> None:
     if Keychain.has_master_passphrase():
         print("Keyring is already protected by a passphrase")
-        print("\nUse 'chia passphrase set' or 'chia passphrase remove' to update or remove your passphrase")
+        print("\nUse 'tree passphrase set' or 'tree passphrase remove' to update or remove your passphrase")
         sys.exit(1)
 
     # We'll rely on Keyring initialization to leverage the cached passphrase for

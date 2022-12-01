@@ -3,12 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint8, uint32, uint64
-from chia.util.streamable import Streamable, streamable
-from chia.wallet.trading.offer import Offer
-from chia.wallet.trading.trade_status import TradeStatus
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint8, uint32, uint64
+from tree.util.streamable import Streamable, streamable
+from tree.wallet.trading.offer import Offer
+from tree.wallet.trading.trade_status import TradeStatus
 
 
 @streamable

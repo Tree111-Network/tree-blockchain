@@ -6,8 +6,8 @@ from typing import Callable, List, Optional, Type, TypeVar, Union, get_type_hint
 
 from typing_extensions import Concatenate, ParamSpec
 
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.util.streamable import Streamable
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.util.streamable import Streamable
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ S = TypeVar("S", bound=Streamable)
 Self = TypeVar("Self")
 
 
-metadata_attribute_name = "_chia_api_metadata"
+metadata_attribute_name = "_tree_api_metadata"
 
 
 @dataclass

@@ -5,8 +5,8 @@ from typing import Optional, Tuple
 
 import click
 
-from chia.cmds.cmds_util import execute_with_wallet
-from chia.util.config import load_config, selected_network_address_prefix
+from tree.cmds.cmds_util import execute_with_wallet
+from tree.util.config import load_config, selected_network_address_prefix
 
 
 @click.group("coins", short_help="Manage your wallets coins")

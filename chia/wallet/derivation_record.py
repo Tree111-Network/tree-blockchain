@@ -4,9 +4,9 @@ from dataclasses import dataclass
 
 from blspy import G1Element
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32
-from chia.wallet.util.wallet_types import WalletType
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint32
+from tree.wallet.util.wallet_types import WalletType
 
 
 @dataclass(frozen=True)

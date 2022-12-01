@@ -14,7 +14,7 @@ This roughly corresponds to bitcoin's graftroot.
 
 from __future__ import annotations
 
-from chia.types.blockchain_format.program import Program
+from tree.types.blockchain_format.program import Program
 
 from . import p2_conditions
 from .load_clvm import load_clvm_maybe_recompile

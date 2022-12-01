@@ -16,7 +16,7 @@ if [ -d  "${SCRIPT_DIR}/.n" ]; then
 fi
 
 if [ -z "$VIRTUAL_ENV" ]; then
-  echo "This requires the chia python virtual environment."
+  echo "This requires the tree python virtual environment."
   echo "Execute '. ./activate' before running."
   exit 1
 fi

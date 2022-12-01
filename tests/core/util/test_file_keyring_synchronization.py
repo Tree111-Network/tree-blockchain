@@ -7,8 +7,8 @@ from pathlib import Path
 from sys import platform
 from time import sleep
 
-from chia.simulator.keyring import TempKeyring, using_temp_file_keyring
-from chia.util.keyring_wrapper import KeyringWrapper
+from tree.simulator.keyring import TempKeyring, using_temp_file_keyring
+from tree.util.keyring_wrapper import KeyringWrapper
 from tests.core.util.test_lockfile import poll_directory
 
 log = logging.getLogger(__name__)

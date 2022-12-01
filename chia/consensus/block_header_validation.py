@@ -7,32 +7,32 @@ from typing import Optional, Tuple
 
 from blspy import AugSchemeMPL
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.blockchain_interface import BlockchainInterface
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.deficit import calculate_deficit
-from chia.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
-from chia.consensus.get_block_challenge import final_eos_is_already_included, get_block_challenge
-from chia.consensus.make_sub_epoch_summary import make_sub_epoch_summary
-from chia.consensus.pot_iterations import (
+from tree.consensus.block_record import BlockRecord
+from tree.consensus.blockchain_interface import BlockchainInterface
+from tree.consensus.constants import ConsensusConstants
+from tree.consensus.deficit import calculate_deficit
+from tree.consensus.difficulty_adjustment import can_finish_sub_and_full_epoch
+from tree.consensus.get_block_challenge import final_eos_is_already_included, get_block_challenge
+from tree.consensus.make_sub_epoch_summary import make_sub_epoch_summary
+from tree.consensus.pot_iterations import (
     calculate_ip_iters,
     calculate_iterations_quality,
     calculate_sp_interval_iters,
     calculate_sp_iters,
     is_overflow_block,
 )
-from chia.consensus.vdf_info_computation import get_signage_point_vdf_info
-from chia.types.blockchain_format.classgroup import ClassgroupElement
-from chia.types.blockchain_format.proof_of_space import verify_and_get_quality_string
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot, SubSlotProofs
-from chia.types.blockchain_format.vdf import VDFInfo, VDFProof
-from chia.types.end_of_slot_bundle import EndOfSubSlotBundle
-from chia.types.header_block import HeaderBlock
-from chia.types.unfinished_header_block import UnfinishedHeaderBlock
-from chia.util.errors import Err, ValidationError
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint32, uint64, uint128
+from tree.consensus.vdf_info_computation import get_signage_point_vdf_info
+from tree.types.blockchain_format.classgroup import ClassgroupElement
+from tree.types.blockchain_format.proof_of_space import verify_and_get_quality_string
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.blockchain_format.slots import ChallengeChainSubSlot, RewardChainSubSlot, SubSlotProofs
+from tree.types.blockchain_format.vdf import VDFInfo, VDFProof
+from tree.types.end_of_slot_bundle import EndOfSubSlotBundle
+from tree.types.header_block import HeaderBlock
+from tree.types.unfinished_header_block import UnfinishedHeaderBlock
+from tree.util.errors import Err, ValidationError
+from tree.util.hash import std_hash
+from tree.util.ints import uint8, uint32, uint64, uint128
 
 log = logging.getLogger(__name__)
 

@@ -7,72 +7,72 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from blspy import G1Element, G2Element, PrivateKey, AugSchemeMPL
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward
-from chia.data_layer.data_layer_wallet import DataLayerWallet
-from chia.pools.pool_wallet import PoolWallet
-from chia.pools.pool_wallet_info import FARMING_TO_POOL, PoolState, PoolWalletInfo, create_pool_state
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.wallet_protocol import CoinState
-from chia.rpc.rpc_server import Endpoint, EndpointResult, default_get_connections
-from chia.server.outbound_message import NodeType, make_msg
-from chia.server.ws_connection import WSChiaConnection
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin, coin_as_list
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.spend_bundle import SpendBundle
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.config import load_config
-from chia.util.errors import KeychainIsLocked
-from chia.util.ints import uint8, uint32, uint64, uint16
-from chia.util.keychain import bytes_to_mnemonic, generate_mnemonic
-from chia.util.path import path_from_root
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.derive_keys import (
+from tree.consensus.block_rewards import calculate_base_farmer_reward
+from tree.data_layer.data_layer_wallet import DataLayerWallet
+from tree.pools.pool_wallet import PoolWallet
+from tree.pools.pool_wallet_info import FARMING_TO_POOL, PoolState, PoolWalletInfo, create_pool_state
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.protocols.wallet_protocol import CoinState
+from tree.rpc.rpc_server import Endpoint, EndpointResult, default_get_connections
+from tree.server.outbound_message import NodeType, make_msg
+from tree.server.ws_connection import WSTreeConnection
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin, coin_as_list
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.coin_spend import CoinSpend
+from tree.types.spend_bundle import SpendBundle
+from tree.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.config import load_config
+from tree.util.errors import KeychainIsLocked
+from tree.util.ints import uint8, uint32, uint64, uint16
+from tree.util.keychain import bytes_to_mnemonic, generate_mnemonic
+from tree.util.path import path_from_root
+from tree.util.ws_message import WsRpcMessage, create_payload_dict
+from tree.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from tree.wallet.cat_wallet.cat_wallet import CATWallet
+from tree.wallet.derive_keys import (
     MAX_POOL_WALLETS,
     master_sk_to_farmer_sk,
     master_sk_to_pool_sk,
     master_sk_to_singleton_owner_sk,
     match_address_to_sk,
 )
-from chia.wallet.did_wallet import did_wallet_puzzles
-from chia.wallet.did_wallet.did_info import DIDInfo
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.did_wallet.did_wallet_puzzles import (
+from tree.wallet.did_wallet import did_wallet_puzzles
+from tree.wallet.did_wallet.did_info import DIDInfo
+from tree.wallet.did_wallet.did_wallet import DIDWallet
+from tree.wallet.did_wallet.did_wallet_puzzles import (
     match_did_puzzle,
     program_to_metadata,
     DID_INNERPUZ_MOD,
     create_fullpuz,
 )
-from chia.wallet.nft_wallet import nft_puzzles
-from chia.wallet.nft_wallet.nft_info import NFTInfo, NFTCoinInfo
-from chia.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.nft_wallet.uncurry_nft import UncurriedNFT
-from chia.wallet.notification_store import Notification
-from chia.wallet.outer_puzzles import AssetType
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_hash_for_synthetic_public_key
-from chia.wallet.trade_record import TradeRecord
-from chia.wallet.trading.offer import Offer
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
-from chia.wallet.util.address_type import AddressType, is_valid_address
-from chia.wallet.util.compute_hints import compute_coin_hints
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.wallet_node import WalletNode
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_protocol import WalletProtocol
+from tree.wallet.nft_wallet import nft_puzzles
+from tree.wallet.nft_wallet.nft_info import NFTInfo, NFTCoinInfo
+from tree.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs
+from tree.wallet.nft_wallet.nft_wallet import NFTWallet
+from tree.wallet.nft_wallet.uncurry_nft import UncurriedNFT
+from tree.wallet.notification_store import Notification
+from tree.wallet.outer_puzzles import AssetType
+from tree.wallet.puzzle_drivers import PuzzleInfo, Solver
+from tree.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import puzzle_hash_for_synthetic_public_key
+from tree.wallet.trade_record import TradeRecord
+from tree.wallet.trading.offer import Offer
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.uncurried_puzzle import uncurry_puzzle
+from tree.wallet.util.address_type import AddressType, is_valid_address
+from tree.wallet.util.compute_hints import compute_coin_hints
+from tree.wallet.util.compute_memos import compute_memos
+from tree.wallet.util.transaction_type import TransactionType
+from tree.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
+from tree.wallet.wallet_coin_record import WalletCoinRecord
+from tree.wallet.wallet_info import WalletInfo
+from tree.wallet.wallet_node import WalletNode
+from tree.wallet.wallet import Wallet
+from tree.wallet.wallet_protocol import WalletProtocol
 
 # Timeout for response from wallet/full node for sending a transaction
 TIMEOUT = 30
@@ -85,7 +85,7 @@ class WalletRpcApi:
     def __init__(self, wallet_node: WalletNode):
         assert wallet_node is not None
         self.service = wallet_node
-        self.service_name = "chia_wallet"
+        self.service_name = "tree_wallet"
         self.balance_cache: Dict[int, Any] = {}
 
     def get_routes(self) -> Dict[str, Endpoint]:
@@ -257,7 +257,7 @@ class WalletRpcApi:
         )
 
     async def get_latest_singleton_coin_spend(
-        self, peer: Optional[WSChiaConnection], coin_id: bytes32, latest: bool = True
+        self, peer: Optional[WSTreeConnection], coin_id: bytes32, latest: bool = True
     ) -> Tuple[CoinSpend, CoinState]:
         if peer is None:
             raise ValueError("No peers to get info from")
@@ -698,7 +698,7 @@ class WalletRpcApi:
 
                 owner_puzzle_hash: bytes32 = await self.service.wallet_state_manager.main_wallet.get_puzzle_hash(True)
 
-                from chia.pools.pool_wallet_info import initial_pool_state_from_dict
+                from tree.pools.pool_wallet_info import initial_pool_state_from_dict
 
                 async with self.service.wallet_state_manager.lock:
                     # We assign a pseudo unique id to each pool wallet, so that each one gets its own deterministic
@@ -1505,8 +1505,8 @@ class WalletRpcApi:
         ###
         # This is temporary code, delete it when we no longer care about incorrectly parsing CAT1s
         # There's also temp code in test_wallet_rpc.py and wallet_funcs.py
-        from chia.util.bech32m import bech32_decode, convertbits
-        from chia.wallet.util.puzzle_compression import decompress_object_with_puzzles
+        from tree.util.bech32m import bech32_decode, convertbits
+        from tree.wallet.util.puzzle_compression import decompress_object_with_puzzles
 
         hrpgot, data = bech32_decode(offer_hex, max_length=len(offer_hex))
         if data is None:
@@ -1536,7 +1536,7 @@ class WalletRpcApi:
     async def check_offer_validity(self, request) -> EndpointResult:
         offer_hex: str = request["offer"]
         offer = Offer.from_bech32(offer_hex)
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         if peer is None:
             raise ValueError("No peer connected")
         return {"valid": (await self.service.wallet_state_manager.trade_manager.check_offer_validity(offer, peer))}
@@ -1557,7 +1557,7 @@ class WalletRpcApi:
             solver = Solver(info=maybe_marshalled_solver)
 
         async with self.service.wallet_state_manager.lock:
-            peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+            peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
             if peer is None:
                 raise ValueError("No peer connected")
             trade_record, tx_records = await self.service.wallet_state_manager.trade_manager.respond_to_offer(
@@ -1742,7 +1742,7 @@ class WalletRpcApi:
         else:
             coin_id = bytes32.from_hexstr(coin_id)
         # Get coin state
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         coin_spend, coin_state = await self.get_latest_singleton_coin_spend(peer, coin_id, request.get("latest", True))
         full_puzzle: Program = Program.from_bytes(bytes(coin_spend.puzzle_reveal))
         uncurried = uncurry_puzzle(full_puzzle)
@@ -1786,7 +1786,7 @@ class WalletRpcApi:
         else:
             coin_id = bytes32.from_hexstr(coin_id)
         # Get coin state
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         assert peer is not None
         coin_spend, coin_state = await self.get_latest_singleton_coin_spend(peer, coin_id)
         full_puzzle: Program = Program.from_bytes(bytes(coin_spend.puzzle_reveal))
@@ -2334,7 +2334,7 @@ class WalletRpcApi:
         else:
             coin_id = bytes32.from_hexstr(coin_id)
         # Get coin state
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         assert peer is not None
         coin_spend, coin_state = await self.get_latest_singleton_coin_spend(peer, coin_id, request.get("latest", True))
         # convert to NFTInfo
@@ -2829,7 +2829,7 @@ class WalletRpcApi:
         if self.service.wallet_state_manager is None:
             raise ValueError("The wallet service is not currently initialized")
 
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         if peer is None:
             raise ValueError("No peer connected")
 
@@ -3033,7 +3033,7 @@ class WalletRpcApi:
         if self.service.wallet_state_manager is None:
             raise ValueError("The wallet service is not currently initialized")
 
-        peer: Optional[WSChiaConnection] = self.service.get_full_node_peer()
+        peer: Optional[WSTreeConnection] = self.service.get_full_node_peer()
         if peer is None:
             raise ValueError("No peer connected")
 

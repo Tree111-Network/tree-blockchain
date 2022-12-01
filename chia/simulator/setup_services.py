@@ -8,33 +8,33 @@ from pathlib import Path
 from secrets import token_bytes
 from typing import Any, AsyncGenerator, List, Optional, Tuple
 
-from chia.cmds.init_funcs import init
-from chia.consensus.constants import ConsensusConstants
-from chia.daemon.server import WebSocketServer, daemon_launch_lock_path
-from chia.farmer.farmer import Farmer
-from chia.full_node.full_node import FullNode
-from chia.harvester.harvester import Harvester
-from chia.introducer.introducer import Introducer
-from chia.protocols.shared_protocol import Capability, capabilities
-from chia.server.start_farmer import create_farmer_service
-from chia.server.start_full_node import create_full_node_service
-from chia.server.start_harvester import create_harvester_service
-from chia.server.start_introducer import create_introducer_service
-from chia.server.start_service import Service
-from chia.server.start_timelord import create_timelord_service
-from chia.server.start_wallet import create_wallet_service
-from chia.simulator.block_tools import BlockTools
-from chia.simulator.keyring import TempKeyring
-from chia.simulator.start_simulator import create_full_node_simulator_service
-from chia.timelord.timelord import Timelord
-from chia.timelord.timelord_launcher import kill_processes, spawn_process
-from chia.types.peer_info import PeerInfo
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.config import lock_and_load_config, save_config
-from chia.util.ints import uint16
-from chia.util.keychain import bytes_to_mnemonic
-from chia.util.lock import Lockfile
-from chia.wallet.wallet_node import WalletNode
+from tree.cmds.init_funcs import init
+from tree.consensus.constants import ConsensusConstants
+from tree.daemon.server import WebSocketServer, daemon_launch_lock_path
+from tree.farmer.farmer import Farmer
+from tree.full_node.full_node import FullNode
+from tree.harvester.harvester import Harvester
+from tree.introducer.introducer import Introducer
+from tree.protocols.shared_protocol import Capability, capabilities
+from tree.server.start_farmer import create_farmer_service
+from tree.server.start_full_node import create_full_node_service
+from tree.server.start_harvester import create_harvester_service
+from tree.server.start_introducer import create_introducer_service
+from tree.server.start_service import Service
+from tree.server.start_timelord import create_timelord_service
+from tree.server.start_wallet import create_wallet_service
+from tree.simulator.block_tools import BlockTools
+from tree.simulator.keyring import TempKeyring
+from tree.simulator.start_simulator import create_full_node_simulator_service
+from tree.timelord.timelord import Timelord
+from tree.timelord.timelord_launcher import kill_processes, spawn_process
+from tree.types.peer_info import PeerInfo
+from tree.util.bech32m import encode_puzzle_hash
+from tree.util.config import lock_and_load_config, save_config
+from tree.util.ints import uint16
+from tree.util.keychain import bytes_to_mnemonic
+from tree.util.lock import Lockfile
+from tree.wallet.wallet_node import WalletNode
 
 log = logging.getLogger(__name__)
 

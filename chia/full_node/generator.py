@@ -3,23 +3,23 @@ from __future__ import annotations
 import logging
 from typing import List, Optional, Tuple, Union
 
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.generator_types import BlockGenerator, CompressorArg, GeneratorBlockCacheInterface
-from chia.util.ints import uint32
-from chia.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
-from chia.wallet.puzzles.rom_bootstrap_generator import get_generator
+from tree.types.blockchain_format.program import Program, SerializedProgram
+from tree.types.generator_types import BlockGenerator, CompressorArg, GeneratorBlockCacheInterface
+from tree.util.ints import uint32
+from tree.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
+from tree.wallet.puzzles.rom_bootstrap_generator import get_generator
 
 GENERATOR_MOD = get_generator()
 
-DECOMPRESS_BLOCK = load_clvm_maybe_recompile("block_program_zero.clvm", package_or_requirement="chia.wallet.puzzles")
-DECOMPRESS_PUZZLE = load_clvm_maybe_recompile("decompress_puzzle.clvm", package_or_requirement="chia.wallet.puzzles")
+DECOMPRESS_BLOCK = load_clvm_maybe_recompile("block_program_zero.clvm", package_or_requirement="tree.wallet.puzzles")
+DECOMPRESS_PUZZLE = load_clvm_maybe_recompile("decompress_puzzle.clvm", package_or_requirement="tree.wallet.puzzles")
 # DECOMPRESS_CSE = load_clvm_maybe_recompile(
 #     "decompress_coin_spend_entry.clvm",
-#     package_or_requirement="chia.wallet.puzzles",
+#     package_or_requirement="tree.wallet.puzzles",
 # )
 
 DECOMPRESS_CSE_WITH_PREFIX = load_clvm_maybe_recompile(
-    "decompress_coin_spend_entry_with_prefix.clvm", package_or_requirement="chia.wallet.puzzles"
+    "decompress_coin_spend_entry_with_prefix.clvm", package_or_requirement="tree.wallet.puzzles"
 )
 log = logging.getLogger(__name__)
 

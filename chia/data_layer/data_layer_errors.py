@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterable, List
 
-from chia.types.blockchain_format.sized_bytes import bytes32
+from tree.types.blockchain_format.sized_bytes import bytes32
 
 
 class IntegrityError(Exception):

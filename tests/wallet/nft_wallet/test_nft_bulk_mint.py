@@ -6,24 +6,24 @@ from typing import Any, Dict
 
 import pytest
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.rpc.full_node_rpc_api import FullNodeRpcApi
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.rpc.rpc_server import start_rpc_server
-from chia.rpc.wallet_rpc_api import WalletRpcApi
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.types.spend_bundle import SpendBundle
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.util.address_type import AddressType
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.rpc.full_node_rpc_api import FullNodeRpcApi
+from tree.rpc.full_node_rpc_client import FullNodeRpcClient
+from tree.rpc.rpc_server import start_rpc_server
+from tree.rpc.wallet_rpc_api import WalletRpcApi
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.simulator.full_node_simulator import FullNodeSimulator
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol
+from tree.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.peer_info import PeerInfo
+from tree.types.spend_bundle import SpendBundle
+from tree.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.did_wallet.did_wallet import DIDWallet
+from tree.wallet.nft_wallet.nft_wallet import NFTWallet
+from tree.wallet.util.address_type import AddressType
 
 
 async def nft_count(wallet: NFTWallet) -> int:
@@ -97,7 +97,7 @@ async def test_nft_mint_from_did(two_wallet_nodes: Any, trusted: Any) -> None:
     # construct sample metadata
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.tree111.com/img/branding/tree-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -583,7 +583,7 @@ async def test_nft_mint_from_did_multiple_xch(two_wallet_nodes: Any, trusted: An
     # construct sample metadata
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.tree111.com/img/branding/tree-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -691,7 +691,7 @@ async def test_nft_mint_from_xch(two_wallet_nodes: Any, trusted: Any) -> None:
     # construct sample metadata
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.tree111.com/img/branding/tree-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -985,7 +985,7 @@ async def test_nft_mint_from_xch_multiple_xch(two_wallet_nodes: Any, trusted: An
     # construct sample metadata
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.tree111.com/img/branding/tree-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )

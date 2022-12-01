@@ -5,12 +5,12 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import click
 
-from chia.cmds.cmds_util import execute_with_wallet
-from chia.cmds.coins import coins_cmd
-from chia.cmds.plotnft import validate_fee
-from chia.wallet.transaction_sorting import SortKey
-from chia.wallet.util.address_type import AddressType
-from chia.wallet.util.wallet_types import WalletType
+from tree.cmds.cmds_util import execute_with_wallet
+from tree.cmds.coins import coins_cmd
+from tree.cmds.plotnft import validate_fee
+from tree.wallet.transaction_sorting import SortKey
+from tree.wallet.util.address_type import AddressType
+from tree.wallet.util.wallet_types import WalletType
 
 
 @click.group("wallet", short_help="Manage your wallet")
@@ -131,7 +131,7 @@ def get_transactions_cmd(
     sys.stdout.close()
 
 
-@wallet_cmd.command("send", short_help="Send chia to another wallet")
+@wallet_cmd.command("send", short_help="Send tree to another wallet")
 @click.option(
     "-wp",
     "--wallet-rpc-port",
@@ -141,7 +141,7 @@ def get_transactions_cmd(
 )
 @click.option("-f", "--fingerprint", help="Set the fingerprint to specify which wallet to use", type=int)
 @click.option("-i", "--id", help="Id of the wallet to use", type=int, default=1, show_default=True, required=True)
-@click.option("-a", "--amount", help="How much chia to send, in XCH", type=str, required=True)
+@click.option("-a", "--amount", help="How much tree to send, in XCH", type=str, required=True)
 @click.option("-e", "--memo", help="Additional memo for the transaction", type=str, default=None)
 @click.option(
     "-m",
@@ -963,7 +963,7 @@ def _send_notification(
 ) -> None:
     import asyncio
 
-    from chia.cmds.cmds_util import execute_with_wallet
+    from tree.cmds.cmds_util import execute_with_wallet
 
     from .wallet_funcs import send_notification
 
@@ -997,7 +997,7 @@ def _get_notifications(
 ) -> None:
     import asyncio
 
-    from chia.cmds.cmds_util import execute_with_wallet
+    from tree.cmds.cmds_util import execute_with_wallet
 
     from .wallet_funcs import get_notifications
 
@@ -1028,7 +1028,7 @@ def _delete_notifications(
 ) -> None:
     import asyncio
 
-    from chia.cmds.cmds_util import execute_with_wallet
+    from tree.cmds.cmds_util import execute_with_wallet
 
     from .wallet_funcs import delete_notifications
 

@@ -4,12 +4,12 @@ from typing import Dict, List
 
 from clvm.casts import int_from_bytes
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import INFINITE_COST
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.spend_bundle import SpendBundle
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import INFINITE_COST
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.spend_bundle import SpendBundle
 
 
 def compute_memos_for_spend(coin_spend: CoinSpend) -> Dict[bytes32, List[bytes]]:

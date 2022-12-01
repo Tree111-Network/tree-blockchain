@@ -6,12 +6,12 @@ from blspy import AugSchemeMPL, G1Element
 from clvm import KEYWORD_FROM_ATOM
 from clvm_tools.binutils import disassemble as bu_disassemble
 
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import INFINITE_COST, Program
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
-from chia.util.hash import std_hash
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import INFINITE_COST, Program
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
+from tree.util.hash import std_hash
 
 CONDITIONS = dict((k, bytes(v)[0]) for k, v in ConditionOpcode.__members__.items())  # pylint: disable=E1101
 KFA = {v: k for k, v in CONDITIONS.items()}

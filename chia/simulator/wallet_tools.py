@@ -5,20 +5,20 @@ from typing import Any, Dict, List, Optional, Tuple
 from blspy import AugSchemeMPL, G1Element, G2Element, PrivateKey
 from clvm.casts import int_from_bytes, int_to_bytes
 
-from chia.consensus.constants import ConsensusConstants
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.spend_bundle import SpendBundle
-from chia.util.condition_tools import conditions_by_opcode, conditions_for_solution
-from chia.util.hash import std_hash
-from chia.util.ints import uint32, uint64
-from chia.wallet.derive_keys import master_sk_to_wallet_sk
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from tree.consensus.constants import ConsensusConstants
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program, SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_with_args import ConditionWithArgs
+from tree.types.spend_bundle import SpendBundle
+from tree.util.condition_tools import conditions_by_opcode, conditions_for_solution
+from tree.util.hash import std_hash
+from tree.util.ints import uint32, uint64
+from tree.wallet.derive_keys import master_sk_to_wallet_sk
+from tree.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
     puzzle_for_pk,

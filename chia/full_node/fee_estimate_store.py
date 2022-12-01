@@ -5,7 +5,7 @@ from typing import Optional
 
 import typing_extensions
 
-from chia.full_node.fee_history import FeeTrackerBackup
+from tree.full_node.fee_history import FeeTrackerBackup
 
 
 @typing_extensions.final

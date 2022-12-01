@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
-from chia.util.ints import uint8, uint32
-from chia.util.streamable import Streamable, streamable
+from tree.util.ints import uint8, uint32
+from tree.util.streamable import Streamable, streamable
 
 
 @streamable

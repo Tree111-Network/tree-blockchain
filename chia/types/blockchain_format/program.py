@@ -9,10 +9,10 @@ from clvm.casts import int_from_bytes
 from clvm.EvalError import EvalError
 from clvm.serialize import sexp_from_stream, sexp_to_stream
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.spend_bundle_conditions import SpendBundleConditions
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.hash import std_hash
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.spend_bundle_conditions import SpendBundleConditions
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.hash import std_hash
 
 from .tree_hash import sha256_treehash
 

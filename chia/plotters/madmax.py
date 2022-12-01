@@ -6,8 +6,8 @@ import sys
 
 from pathlib import Path
 from typing import Any, Dict, Optional
-from chia.plotting.create_plots import resolve_plot_keys
-from chia.plotters.plotters_util import (
+from tree.plotting.create_plots import resolve_plot_keys
+from tree.plotters.plotters_util import (
     run_plotter,
     run_command,
     reset_loop_policy_for_windows,
@@ -154,7 +154,7 @@ def dir_with_trailing_slash(dir: str) -> str:
     return dir if dir[-1] == os.path.sep else dir + os.path.sep
 
 
-def plot_madmax(args, chia_root_path: Path, plotters_root_path: Path):
+def plot_madmax(args, tree_root_path: Path, plotters_root_path: Path):
     if sys.platform != "win32" and sys.platform != "cygwin":
         import resource
 
@@ -177,7 +177,7 @@ def plot_madmax(args, chia_root_path: Path, plotters_root_path: Path):
             None,
             None if args.pool_key == b"" else args.pool_key.hex(),
             None if args.contract == "" else args.contract,
-            chia_root_path,
+            tree_root_path,
             log,
             args.connect_to_daemon,
         )
@@ -218,7 +218,7 @@ def plot_madmax(args, chia_root_path: Path, plotters_root_path: Path):
         call_args.append("-k")
         call_args.append(str(args.size))
     try:
-        asyncio.run(run_plotter(chia_root_path, args.plotter, call_args, progress))
+        asyncio.run(run_plotter(tree_root_path, args.plotter, call_args, progress))
     except Exception as e:
         print(f"Exception while plotting: {type(e)} {e}")
         print(f"Traceback: {traceback.format_exc()}")

@@ -6,8 +6,8 @@ from typing import List, Tuple
 
 import typing_extensions
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.db_wrapper import DBWrapper2
 
 log = logging.getLogger(__name__)
 

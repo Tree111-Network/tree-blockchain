@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from chia.rpc.rpc_client import RpcClient
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint64
+from tree.rpc.rpc_client import RpcClient
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint64
 
 
 class DataLayerRpcClient(RpcClient):

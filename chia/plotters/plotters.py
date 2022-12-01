@@ -2,9 +2,9 @@ import argparse
 import binascii
 import os
 from enum import Enum
-from chia.plotters.bladebit import get_bladebit_install_info, plot_bladebit
-from chia.plotters.chiapos import get_chiapos_install_info, plot_chia
-from chia.plotters.madmax import get_madmax_install_info, plot_madmax
+from tree.plotters.bladebit import get_bladebit_install_info, plot_bladebit
+from tree.plotters.chiapos import get_chiapos_install_info, plot_tree
+from tree.plotters.madmax import get_madmax_install_info, plot_madmax
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -416,8 +416,8 @@ def build_parser(subparsers, root_path, option_list, name, plotter_desc):
 
 
 def call_plotters(root_path: Path, args):
-    # Add `plotters` section in CHIA_ROOT.
-    chia_root_path = root_path
+    # Add `plotters` section in TREE_ROOT.
+    tree_root_path = root_path
     root_path = get_plotters_root_path(root_path)
     if not root_path.is_dir():
         if os.path.exists(root_path):
@@ -427,16 +427,16 @@ def call_plotters(root_path: Path, args):
                 print(f"Exception deleting old root path: {type(e)} {e}.")
 
     if not os.path.exists(root_path):
-        print(f"Creating plotters folder within CHIA_ROOT: {root_path}")
+        print(f"Creating plotters folder within TREE_ROOT: {root_path}")
         try:
             os.mkdir(root_path)
         except Exception as e:
             print(f"Cannot create plotters root path {root_path} {type(e)} {e}.")
 
-    plotters = argparse.ArgumentParser("chia plotters", description="Available options.")
+    plotters = argparse.ArgumentParser("tree plotters", description="Available options.")
     subparsers = plotters.add_subparsers(help="Available options", dest="plotter")
 
-    build_parser(subparsers, root_path, chia_plotter_options, "chiapos", "Create a plot with the default chia plotter")
+    build_parser(subparsers, root_path, chia_plotter_options, "chiapos", "Create a plot with the default tree plotter")
     build_parser(subparsers, root_path, madmax_plotter_options, "madmax", "Create a plot with madMAx")
 
     bladebit_parser = subparsers.add_parser("bladebit", help="Create a plot with bladebit")
@@ -447,12 +447,12 @@ def call_plotters(root_path: Path, args):
     subparsers.add_parser("version", help="Show plotter versions")
 
     deprecation_warning = (
-        "[DEPRECATED] 'chia plotters install' is no longer available. Use install-plotter.sh/ps1 instead."
+        "[DEPRECATED] 'tree plotters install' is no longer available. Use install-plotter.sh/ps1 instead."
     )
     install_parser = subparsers.add_parser("install", help=deprecation_warning)
     install_parser.add_argument("install_plotter", type=str, nargs="*")
 
-    deprecation_warning_bb2 = "[DEPRECATED] 'chia plotters bladebit2' was integrated to 'chia plotters bladebit'"
+    deprecation_warning_bb2 = "[DEPRECATED] 'tree plotters bladebit2' was integrated to 'tree plotters bladebit'"
     bladebit2_parser = subparsers.add_parser("bladebit2", help=deprecation_warning_bb2)
     bladebit2_parser.add_argument("bladebit2_plotter", type=str, nargs="*")
 
@@ -461,13 +461,13 @@ def call_plotters(root_path: Path, args):
     if args.plotter is None:
         plotters.print_help()
     elif args.plotter == "chiapos":
-        plot_chia(args, chia_root_path)
+        plot_tree(args, tree_root_path)
     elif args.plotter == "madmax":
-        plot_madmax(args, chia_root_path, root_path)
+        plot_madmax(args, tree_root_path, root_path)
     elif args.plotter == "bladebit":
-        plot_bladebit(args, chia_root_path, root_path)
+        plot_bladebit(args, tree_root_path, root_path)
     elif args.plotter == "version":
-        show_plotters_version(chia_root_path)
+        show_plotters_version(tree_root_path)
     elif args.plotter == "install":
         print(deprecation_warning)
     elif args.plotter == "bladebit2":

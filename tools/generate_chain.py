@@ -12,12 +12,12 @@ from typing import Iterator, List, Optional
 import click
 import zstd
 
-from chia.simulator.block_tools import create_block_tools
-from chia.simulator.keyring import TempKeyring
-from chia.types.blockchain_format.coin import Coin
-from chia.types.spend_bundle import SpendBundle
-from chia.util.chia_logging import initialize_logging
-from chia.util.ints import uint32, uint64
+from tree.simulator.block_tools import create_block_tools
+from tree.simulator.keyring import TempKeyring
+from tree.types.blockchain_format.coin import Coin
+from tree.types.spend_bundle import SpendBundle
+from tree.util.tree_logging import initialize_logging
+from tree.util.ints import uint32, uint64
 from tools.test_constants import test_constants
 
 

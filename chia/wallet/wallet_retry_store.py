@@ -4,9 +4,9 @@ from typing import List, Optional, Tuple
 
 from chia_rs import CoinState
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.ints import uint32
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.db_wrapper import DBWrapper2
+from tree.util.ints import uint32
 
 
 class WalletRetryStore:

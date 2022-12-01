@@ -6,24 +6,24 @@ from typing import Dict, Optional, Tuple
 from chia_rs import MEMPOOL_MODE, NO_NEG_DIV
 from chia_rs import get_puzzle_and_solution_for_coin as get_puzzle_and_solution_for_coin_rust
 
-from chia.consensus.cost_calculator import NPCResult
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.full_node.generator import setup_generator_args
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.generator_types import BlockGenerator
-from chia.types.spend_bundle_conditions import SpendBundleConditions
-from chia.util.errors import Err
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.puzzles.load_clvm import load_serialized_clvm_maybe_recompile
-from chia.wallet.puzzles.rom_bootstrap_generator import get_generator
+from tree.consensus.cost_calculator import NPCResult
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.full_node.generator import setup_generator_args
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program, SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.generator_types import BlockGenerator
+from tree.types.spend_bundle_conditions import SpendBundleConditions
+from tree.util.errors import Err
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.puzzles.load_clvm import load_serialized_clvm_maybe_recompile
+from tree.wallet.puzzles.rom_bootstrap_generator import get_generator
 
 GENERATOR_MOD = get_generator()
 
 DESERIALIZE_MOD = load_serialized_clvm_maybe_recompile(
-    "chialisp_deserialisation.clvm", package_or_requirement="chia.wallet.puzzles"
+    "chialisp_deserialisation.clvm", package_or_requirement="tree.wallet.puzzles"
 )
 
 log = logging.getLogger(__name__)

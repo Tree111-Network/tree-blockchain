@@ -4,28 +4,28 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional, List, Dict, Tuple, Any, Type, TypeVar, Callable
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.blockchain_format.coin import Coin
-from chia.types.mempool_item import MempoolItem
-from chia.util.ints import uint64, uint32
-from chia.util.hash import std_hash
-from chia.util.errors import Err, ValidationError
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.streamable import Streamable, streamable
-from chia.types.coin_record import CoinRecord
-from chia.types.spend_bundle import SpendBundle
-from chia.types.generator_types import BlockGenerator
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.coin_spend import CoinSpend
-from chia.full_node.bundle_tools import simple_solution_generator
-from chia.full_node.mempool_manager import MempoolManager
-from chia.full_node.coin_store import CoinStore
-from chia.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.consensus.coinbase import create_pool_coin, create_farmer_coin
-from chia.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
-from chia.consensus.cost_calculator import NPCResult
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.blockchain_format.coin import Coin
+from tree.types.mempool_item import MempoolItem
+from tree.util.ints import uint64, uint32
+from tree.util.hash import std_hash
+from tree.util.errors import Err, ValidationError
+from tree.util.db_wrapper import DBWrapper2
+from tree.util.streamable import Streamable, streamable
+from tree.types.coin_record import CoinRecord
+from tree.types.spend_bundle import SpendBundle
+from tree.types.generator_types import BlockGenerator
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.types.coin_spend import CoinSpend
+from tree.full_node.bundle_tools import simple_solution_generator
+from tree.full_node.mempool_manager import MempoolManager
+from tree.full_node.coin_store import CoinStore
+from tree.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
+from tree.consensus.constants import ConsensusConstants
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.consensus.coinbase import create_pool_coin, create_farmer_coin
+from tree.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
+from tree.consensus.cost_calculator import NPCResult
 
 """
 The purpose of this file is to provide a lightweight simulator for the testing of Chialisp smart contracts.
@@ -33,7 +33,7 @@ The purpose of this file is to provide a lightweight simulator for the testing o
 The Node object uses actual MempoolManager, Mempool and CoinStore objects, while substituting FullBlock and
 BlockRecord objects for trimmed down versions.
 
-There is also a provided NodeClient object which implements many of the methods from chia.rpc.full_node_rpc_client
+There is also a provided NodeClient object which implements many of the methods from tree.rpc.full_node_rpc_client
 and is designed so that you could test with it and then swap in a real rpc client that uses the same code you tested.
 """
 

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from blspy import AugSchemeMPL, G1Element
 
-from chia.util import cached_bls
-from chia.util.hash import std_hash
-from chia.util.lru_cache import LRUCache
+from tree.util import cached_bls
+from tree.util.hash import std_hash
+from tree.util.lru_cache import LRUCache
 
 
 def test_cached_bls():

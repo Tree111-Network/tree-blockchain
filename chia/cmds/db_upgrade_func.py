@@ -9,10 +9,10 @@ from pathlib import Path
 from time import time
 from typing import Dict, Optional
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.config import load_config, lock_and_load_config, save_config
-from chia.util.ints import uint32
-from chia.util.path import path_from_root
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.config import load_config, lock_and_load_config, save_config
+from tree.util.ints import uint32
+from tree.util.path import path_from_root
 
 
 # if either the input database or output database file is specified, the

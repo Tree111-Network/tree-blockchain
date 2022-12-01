@@ -4,13 +4,13 @@ import asyncio
 from logging import Logger
 from typing import Optional
 
-from chia.server.server import ChiaServer
-from chia.types.peer_info import PeerInfo
-from chia.util.network import get_host_addr
+from tree.server.server import TreeServer
+from tree.types.peer_info import PeerInfo
+from tree.util.network import get_host_addr
 
 
 def start_reconnect_task(
-    server: ChiaServer, peer_info_arg: PeerInfo, log: Logger, prefer_ipv6: Optional[bool]
+    server: TreeServer, peer_info_arg: PeerInfo, log: Logger, prefer_ipv6: Optional[bool]
 ) -> asyncio.Task[None]:
     """
     Start a background task that checks connection and reconnects periodically to a peer.

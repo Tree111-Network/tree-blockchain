@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from chia.rpc.rpc_client import RpcClient
+from tree.rpc.rpc_client import RpcClient
 
 
 class HarvesterRpcClient(RpcClient):
     """
-    Client to Chia RPC, connects to a local harvester. Uses HTTP/JSON, and converts back from
+    Client to Tree RPC, connects to a local harvester. Uses HTTP/JSON, and converts back from
     JSON into native python objects before returning. All api calls use POST requests.
-    Note that this is not the same as the peer protocol, or wallet protocol (which run Chia's
+    Note that this is not the same as the peer protocol, or wallet protocol (which run Tree's
     protocol on top of TCP), it's a separate protocol on top of HTTP that provides easy access
     to the full node.
     """

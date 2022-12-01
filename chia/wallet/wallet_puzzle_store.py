@@ -6,12 +6,12 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from blspy import G1Element
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2, execute_fetchone
-from chia.util.ints import uint32
-from chia.util.lru_cache import LRUCache
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.util.wallet_types import WalletType
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.db_wrapper import DBWrapper2, execute_fetchone
+from tree.util.ints import uint32
+from tree.util.lru_cache import LRUCache
+from tree.wallet.derivation_record import DerivationRecord
+from tree.wallet.util.wallet_types import WalletType
 
 log = logging.getLogger(__name__)
 

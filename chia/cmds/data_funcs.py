@@ -4,15 +4,15 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from chia.cmds.cmds_util import get_any_service_client
-from chia.cmds.units import units
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint64
+from tree.cmds.cmds_util import get_any_service_client
+from tree.cmds.units import units
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.ints import uint64
 
 
 async def create_data_store_cmd(rpc_port: Optional[int], fee: Optional[str]) -> None:
-    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["chia"]))
+    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["tree"]))
     async with get_any_service_client("data_layer", rpc_port) as (client, config, _):
         if client is not None:
             res = await client.create_data_store(fee=final_fee)
@@ -36,7 +36,7 @@ async def update_data_store_cmd(
     fee: Optional[str],
 ) -> None:
     store_id_bytes = bytes32.from_hexstr(store_id)
-    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["chia"]))
+    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["tree"]))
     async with get_any_service_client("data_layer", rpc_port) as (client, config, _):
         if client is not None:
             res = await client.update_data_store(store_id=store_id_bytes, changelist=changelist, fee=final_fee)
@@ -158,7 +158,7 @@ async def add_mirror_cmd(
     rpc_port: Optional[int], store_id: str, urls: List[str], amount: int, fee: Optional[str]
 ) -> None:
     store_id_bytes = bytes32.from_hexstr(store_id)
-    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["chia"]))
+    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["tree"]))
     async with get_any_service_client("data_layer", rpc_port) as (client, config, _):
         if client is not None:
             res = await client.add_mirror(
@@ -172,7 +172,7 @@ async def add_mirror_cmd(
 
 async def delete_mirror_cmd(rpc_port: Optional[int], coin_id: str, fee: Optional[str]) -> None:
     coin_id_bytes = bytes32.from_hexstr(coin_id)
-    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["chia"]))
+    final_fee = None if fee is None else uint64(int(Decimal(fee) * units["tree"]))
     async with get_any_service_client("data_layer", rpc_port) as (client, config, _):
         if client is not None:
             res = await client.delete_mirror(

@@ -6,21 +6,21 @@ import sys
 from multiprocessing import freeze_support
 from typing import Any, Dict, Optional
 
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.rpc.wallet_rpc_api import WalletRpcApi
-from chia.server.outbound_message import NodeType
-from chia.server.start_service import RpcInfo, Service, async_run
-from chia.types.peer_info import PeerInfo
-from chia.util.chia_logging import initialize_service_logging
-from chia.util.config import load_config, load_config_cli
-from chia.util.default_root import DEFAULT_ROOT_PATH
-from chia.util.keychain import Keychain
-from chia.util.task_timing import maybe_manage_task_instrumentation
-from chia.wallet.wallet_node import WalletNode
+from tree.consensus.constants import ConsensusConstants
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.rpc.wallet_rpc_api import WalletRpcApi
+from tree.server.outbound_message import NodeType
+from tree.server.start_service import RpcInfo, Service, async_run
+from tree.types.peer_info import PeerInfo
+from tree.util.tree_logging import initialize_service_logging
+from tree.util.config import load_config, load_config_cli
+from tree.util.default_root import DEFAULT_ROOT_PATH
+from tree.util.keychain import Keychain
+from tree.util.task_timing import maybe_manage_task_instrumentation
+from tree.wallet.wallet_node import WalletNode
 
 # See: https://bugs.python.org/issue29288
-from chia.wallet.wallet_node_api import WalletNodeAPI
+from tree.wallet.wallet_node_api import WalletNodeAPI
 
 "".encode("idna")
 
@@ -93,7 +93,7 @@ async def async_main() -> int:
     # This is simulator
     local_test = service_config["testing"]
     if local_test is True:
-        from chia.simulator.block_tools import test_constants
+        from tree.simulator.block_tools import test_constants
 
         constants = test_constants
         current = service_config["database_path"]
@@ -112,7 +112,7 @@ async def async_main() -> int:
 def main() -> int:
     freeze_support()
 
-    with maybe_manage_task_instrumentation(enable=os.environ.get("CHIA_INSTRUMENT_WALLET") is not None):
+    with maybe_manage_task_instrumentation(enable=os.environ.get("TREE_INSTRUMENT_WALLET") is not None):
         return async_run(async_main())
 
 

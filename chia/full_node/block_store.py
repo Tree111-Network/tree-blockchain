@@ -8,16 +8,16 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 import typing_extensions
 import zstd
 
-from chia.consensus.block_record import BlockRecord
-from chia.types.blockchain_format.program import SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.full_block import FullBlock
-from chia.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
-from chia.util.db_wrapper import DBWrapper2, execute_fetchone
-from chia.util.errors import Err
-from chia.util.full_block_utils import GeneratorBlockInfo, block_info_from_block, generator_from_block
-from chia.util.ints import uint32
-from chia.util.lru_cache import LRUCache
+from tree.consensus.block_record import BlockRecord
+from tree.types.blockchain_format.program import SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.full_block import FullBlock
+from tree.types.weight_proof import SubEpochChallengeSegment, SubEpochSegments
+from tree.util.db_wrapper import DBWrapper2, execute_fetchone
+from tree.util.errors import Err
+from tree.util.full_block_utils import GeneratorBlockInfo, block_info_from_block, generator_from_block
+from tree.util.ints import uint32
+from tree.util.lru_cache import LRUCache
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ class BlockStore:
                 await conn.execute("CREATE TABLE IF NOT EXISTS current_peak(key int PRIMARY KEY, hash blob)")
 
                 # If any of these indices are altered, they should also be altered
-                # in the chia/cmds/db_upgrade.py file
+                # in the tree/cmds/db_upgrade.py file
                 log.info("DB: Creating index height")
                 await conn.execute("CREATE INDEX IF NOT EXISTS height on full_blocks(height)")
 
@@ -72,7 +72,7 @@ class BlockStore:
                 )
 
                 # If any of these indices are altered, they should also be altered
-                # in the chia/cmds/db_upgrade.py file
+                # in the tree/cmds/db_upgrade.py file
                 log.info("DB: Creating index is_fully_compactified")
                 await conn.execute(
                     "CREATE INDEX IF NOT EXISTS is_fully_compactified ON"

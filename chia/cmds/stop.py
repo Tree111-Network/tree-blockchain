@@ -7,16 +7,16 @@ from typing import Any, Dict
 
 import click
 
-from chia.util.config import load_config
-from chia.util.service_groups import all_groups, services_for_groups
+from tree.util.config import load_config
+from tree.util.service_groups import all_groups, services_for_groups
 
 
 async def async_stop(root_path: Path, config: Dict[str, Any], group: str, stop_daemon: bool) -> int:
-    from chia.daemon.client import connect_to_daemon_and_validate
+    from tree.daemon.client import connect_to_daemon_and_validate
 
     daemon = await connect_to_daemon_and_validate(root_path, config)
     if daemon is None:
-        print("Couldn't connect to chia daemon")
+        print("Couldn't connect to tree daemon")
         return 1
 
     if stop_daemon:
@@ -52,7 +52,7 @@ async def async_stop(root_path: Path, config: Dict[str, Any], group: str, stop_d
 @click.argument("group", type=click.Choice(list(all_groups())), nargs=-1, required=True)
 @click.pass_context
 def stop_cmd(ctx: click.Context, daemon: bool, group: str) -> None:
-    from chia.cmds.beta_funcs import warn_if_beta_enabled
+    from tree.cmds.beta_funcs import warn_if_beta_enabled
 
     root_path = ctx.obj["root_path"]
     config = load_config(root_path, "config.yaml")

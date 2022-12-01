@@ -1,17 +1,17 @@
 from typing import Dict, List, Optional, Tuple, Any
 
-from chia.consensus.block_record import BlockRecord
-from chia.full_node.signage_point import SignagePoint
-from chia.rpc.rpc_client import RpcClient
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.end_of_slot_bundle import EndOfSubSlotBundle
-from chia.types.full_block import FullBlock
-from chia.types.spend_bundle import SpendBundle
-from chia.types.unfinished_header_block import UnfinishedHeaderBlock
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint32, uint64
+from tree.consensus.block_record import BlockRecord
+from tree.full_node.signage_point import SignagePoint
+from tree.rpc.rpc_client import RpcClient
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.coin_spend import CoinSpend
+from tree.types.end_of_slot_bundle import EndOfSubSlotBundle
+from tree.types.full_block import FullBlock
+from tree.types.spend_bundle import SpendBundle
+from tree.types.unfinished_header_block import UnfinishedHeaderBlock
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.ints import uint32, uint64
 
 
 def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
@@ -21,9 +21,9 @@ def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
 
 class FullNodeRpcClient(RpcClient):
     """
-    Client to Chia RPC, connects to a local full node. Uses HTTP/JSON, and converts back from
+    Client to Tree RPC, connects to a local full node. Uses HTTP/JSON, and converts back from
     JSON into native python objects before returning. All api calls use POST requests.
-    Note that this is not the same as the peer protocol, or wallet protocol (which run Chia's
+    Note that this is not the same as the peer protocol, or wallet protocol (which run Tree's
     protocol on top of TCP), it's a separate protocol on top of HTTP that provides easy access
     to the full node.
     """

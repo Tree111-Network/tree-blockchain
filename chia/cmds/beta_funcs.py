@@ -5,19 +5,19 @@ import sys
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
-from chia.util.beta_metrics import metrics_log_interval_max, metrics_log_interval_min
-from chia.util.chia_logging import get_beta_logging_config
-from chia.util.errors import InvalidPathError
-from chia.util.misc import format_bytes, prompt_yes_no, validate_directory_writable
+from tree.util.beta_metrics import metrics_log_interval_max, metrics_log_interval_min
+from tree.util.tree_logging import get_beta_logging_config
+from tree.util.errors import InvalidPathError
+from tree.util.misc import format_bytes, prompt_yes_no, validate_directory_writable
 
 
 def default_beta_root_path() -> Path:
-    return Path(os.path.expanduser(os.getenv("CHIA_BETA_ROOT", "~/chia-beta-test"))).resolve()
+    return Path(os.path.expanduser(os.getenv("TREE_BETA_ROOT", "~/tree-beta-test"))).resolve()
 
 
 def warn_if_beta_enabled(config: Dict[str, Any]) -> None:
     if config.get("beta", {}).get("enabled", False):
-        print("\nWARNING: beta test mode is enabled. Run `chia beta disable` if this is unintentional.\n")
+        print("\nWARNING: beta test mode is enabled. Run `tree beta disable` if this is unintentional.\n")
 
 
 def prompt_beta_warning() -> bool:
@@ -115,7 +115,7 @@ def prepare_plotting_log(path: Path) -> None:
     print(f"  - {path.name}")
 
 
-def prepare_chia_blockchain_log(path: Path) -> None:
+def prepare_tree_blockchain_log(path: Path) -> None:
     # TODO: Do stuff we want to do with the logs before submission. Maybe even just fully parse them and
     #  create some final result files and zip them instead of just the logs.
     print(f"  - {path.name}")

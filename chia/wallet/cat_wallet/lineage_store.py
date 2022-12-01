@@ -3,9 +3,9 @@ from __future__ import annotations
 import logging
 from typing import Dict, Optional
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2
-from chia.wallet.lineage_proof import LineageProof
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.db_wrapper import DBWrapper2
+from tree.wallet.lineage_proof import LineageProof
 
 log = logging.getLogger(__name__)
 

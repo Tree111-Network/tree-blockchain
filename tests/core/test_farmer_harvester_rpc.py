@@ -14,31 +14,31 @@ from typing import Any, Awaitable, Callable, Dict, List, Union, cast
 import pytest
 import pytest_asyncio
 
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.farmer.farmer import Farmer
-from chia.plot_sync.receiver import Receiver
-from chia.plotting.util import add_plot_directory
-from chia.protocols import farmer_protocol
-from chia.protocols.harvester_protocol import Plot
-from chia.rpc.farmer_rpc_api import (
+from tree.consensus.coinbase import create_puzzlehash_for_pk
+from tree.farmer.farmer import Farmer
+from tree.plot_sync.receiver import Receiver
+from tree.plotting.util import add_plot_directory
+from tree.protocols import farmer_protocol
+from tree.protocols.harvester_protocol import Plot
+from tree.rpc.farmer_rpc_api import (
     FilterItem,
     PaginatedRequestData,
     PlotInfoRequestData,
     PlotPathRequestData,
     plot_matches_filter,
 )
-from chia.rpc.farmer_rpc_client import FarmerRpcClient
-from chia.rpc.harvester_rpc_client import HarvesterRpcClient
-from chia.simulator.block_tools import get_plot_dir
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.config import load_config, lock_and_load_config, save_config
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint32, uint64
-from chia.util.misc import get_list_or_len
-from chia.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
+from tree.rpc.farmer_rpc_client import FarmerRpcClient
+from tree.rpc.harvester_rpc_client import HarvesterRpcClient
+from tree.simulator.block_tools import get_plot_dir
+from tree.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.config import load_config, lock_and_load_config, save_config
+from tree.util.hash import std_hash
+from tree.util.ints import uint8, uint32, uint64
+from tree.util.misc import get_list_or_len
+from tree.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
 from tests.plot_sync.test_delta import dummy_plot
 from tests.util.misc import assert_rpc_error
 from tests.util.rpc import validate_get_routes

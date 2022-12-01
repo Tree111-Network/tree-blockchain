@@ -9,10 +9,10 @@ from typing import Dict, List, Optional, Tuple, Union
 from blspy import G1Element, PrivateKey
 from chiapos import DiskProver
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.config import load_config, lock_and_load_config, save_config
-from chia.util.ints import uint32
-from chia.util.streamable import Streamable, streamable
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.config import load_config, lock_and_load_config, save_config
+from tree.util.ints import uint32
+from tree.util.streamable import Streamable, streamable
 
 log = logging.getLogger(__name__)
 

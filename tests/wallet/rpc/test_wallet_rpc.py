@@ -10,42 +10,42 @@ import pytest
 import pytest_asyncio
 from blspy import G2Element
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.server.server import ChiaServer
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.peer_info import PeerInfo
-from chia.types.spend_bundle import SpendBundle
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.config import lock_and_load_config, save_config
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.trading.trade_status import TradeStatus
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.transaction_sorting import SortKey
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
-from chia.wallet.util.address_type import AddressType
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_node import WalletNode
-from chia.wallet.wallet_protocol import WalletProtocol
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.consensus.coinbase import create_puzzlehash_for_pk
+from tree.rpc.full_node_rpc_client import FullNodeRpcClient
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.server.server import TreeServer
+from tree.simulator.full_node_simulator import FullNodeSimulator
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol
+from tree.simulator.time_out_assert import time_out_assert
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.coin_spend import CoinSpend
+from tree.types.peer_info import PeerInfo
+from tree.types.spend_bundle import SpendBundle
+from tree.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from tree.util.config import lock_and_load_config, save_config
+from tree.util.hash import std_hash
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from tree.wallet.cat_wallet.cat_wallet import CATWallet
+from tree.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
+from tree.wallet.did_wallet.did_wallet import DIDWallet
+from tree.wallet.nft_wallet.nft_wallet import NFTWallet
+from tree.wallet.puzzles.cat_loader import CAT_MOD
+from tree.wallet.trading.trade_status import TradeStatus
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.transaction_sorting import SortKey
+from tree.wallet.uncurried_puzzle import uncurry_puzzle
+from tree.wallet.util.address_type import AddressType
+from tree.wallet.util.compute_memos import compute_memos
+from tree.wallet.util.wallet_types import WalletType
+from tree.wallet.wallet import Wallet
+from tree.wallet.wallet_node import WalletNode
+from tree.wallet.wallet_protocol import WalletProtocol
 from tests.util.wallet_is_synced import wallet_is_synced
 
 log = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ class WalletBundle:
 
 @dataclasses.dataclass
 class FullNodeBundle:
-    server: ChiaServer
+    server: TreeServer
     api: FullNodeSimulator
     rpc_client: FullNodeRpcClient
 
@@ -749,7 +749,7 @@ async def test_offer_endpoints(wallet_rpc_environment: WalletRpcTestEnvironment)
         assert cr.coin in spend_bundle.additions()
     with pytest.raises(ValueError):
         await wallet_1_rpc.get_coin_records_by_names([a.name() for a in spend_bundle.additions() if a.amount == 4])
-    # Create an offer of 5 chia for one CAT
+    # Create an offer of 5 tree for one CAT
     offer, trade_record = await wallet_1_rpc.create_offer_for_ids(
         {uint32(1): -5, cat_asset_id.hex(): 1}, validate_only=True
     )
@@ -974,7 +974,7 @@ async def test_nft_endpoints(wallet_rpc_environment: WalletRpcTestEnvironment):
         None,
         None,
         "0xD4584AD463139FA8C0D9F68F4B59F185",
-        ["https://www.chia.net/img/branding/chia-logo.svg"],
+        ["https://www.tree111.com/img/branding/tree-logo.svg"],
     )
     assert res["success"]
 

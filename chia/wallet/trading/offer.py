@@ -6,15 +6,15 @@ from typing import Any, BinaryIO, Dict, List, Optional, Set, Tuple, Union
 from blspy import G2Element
 from clvm_tools.binutils import disassemble
 
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin, coin_as_list
-from chia.types.blockchain_format.program import INFINITE_COST, Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.spend_bundle import SpendBundle
-from chia.util.bech32m import bech32_decode, bech32_encode, convertbits
-from chia.util.ints import uint64
-from chia.wallet.outer_puzzles import (
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin, coin_as_list
+from tree.types.blockchain_format.program import INFINITE_COST, Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.spend_bundle import SpendBundle
+from tree.util.bech32m import bech32_decode, bech32_encode, convertbits
+from tree.util.ints import uint64
+from tree.wallet.outer_puzzles import (
     construct_puzzle,
     create_asset_id,
     get_inner_puzzle,
@@ -22,11 +22,11 @@ from chia.wallet.outer_puzzles import (
     match_puzzle,
     solve_puzzle,
 )
-from chia.wallet.payment import Payment
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
-from chia.wallet.uncurried_puzzle import UncurriedPuzzle, uncurry_puzzle
-from chia.wallet.util.puzzle_compression import (
+from tree.wallet.payment import Payment
+from tree.wallet.puzzle_drivers import PuzzleInfo, Solver
+from tree.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
+from tree.wallet.uncurried_puzzle import UncurriedPuzzle, uncurry_puzzle
+from tree.wallet.util.puzzle_compression import (
     compress_object_with_puzzles,
     decompress_object_with_puzzles,
     lowest_best_version,

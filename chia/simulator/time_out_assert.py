@@ -5,7 +5,7 @@ import logging
 import time
 from typing import Callable
 
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
 
 log = logging.getLogger(__name__)
 

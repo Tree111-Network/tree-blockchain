@@ -9,8 +9,8 @@ from typing import Any, AsyncIterator, Dict, Optional
 
 import aiohttp
 
-from chia.util.json_util import dict_to_json_str
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
+from tree.util.json_util import dict_to_json_str
+from tree.util.ws_message import WsRpcMessage, create_payload_dict
 
 
 class DaemonProxy:
@@ -163,7 +163,7 @@ async def connect_to_daemon_and_validate(
     Connect to the local daemon and do a ping to ensure that something is really
     there and running.
     """
-    from chia.server.server import ssl_context_for_client
+    from tree.server.server import ssl_context_for_client
 
     try:
         daemon_max_message_size = config.get("daemon_max_message_size", 50 * 1000 * 1000)

@@ -4,14 +4,14 @@ from typing import List, Optional, Set, Tuple
 
 from blspy import AugSchemeMPL, G1Element, PrivateKey
 
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32
+from tree.consensus.coinbase import create_puzzlehash_for_pk
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint32
 
 # EIP 2334 bls key derivation
 # https://eips.ethereum.org/EIPS/eip-2334
 # 12381 = bls spec number
-# 8444 = Chia blockchain number and port number
+# 8444 = Tree blockchain number and port number
 # 0, 1, 2, 3, 4, 5, 6 farmer, pool, wallet, local, backup key, singleton, pooling authentication key numbers
 
 # Allows up to 100 pool wallets (plot NFTs)

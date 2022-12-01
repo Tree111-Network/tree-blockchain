@@ -7,18 +7,18 @@ import sys
 from multiprocessing import freeze_support
 from typing import Any, Dict, List, Optional, Tuple
 
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.full_node.full_node import FullNode
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.rpc.full_node_rpc_api import FullNodeRpcApi
-from chia.server.outbound_message import NodeType
-from chia.server.start_service import RpcInfo, Service, async_run
-from chia.util.chia_logging import initialize_service_logging
-from chia.util.config import load_config, load_config_cli
-from chia.util.default_root import DEFAULT_ROOT_PATH
-from chia.util.ints import uint16
-from chia.util.task_timing import maybe_manage_task_instrumentation
+from tree.consensus.constants import ConsensusConstants
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.full_node.full_node import FullNode
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.rpc.full_node_rpc_api import FullNodeRpcApi
+from tree.server.outbound_message import NodeType
+from tree.server.start_service import RpcInfo, Service, async_run
+from tree.util.tree_logging import initialize_service_logging
+from tree.util.config import load_config, load_config_cli
+from tree.util.default_root import DEFAULT_ROOT_PATH
+from tree.util.ints import uint16
+from tree.util.task_timing import maybe_manage_task_instrumentation
 
 # See: https://bugs.python.org/issue29288
 "".encode("idna")
@@ -86,7 +86,7 @@ async def async_main() -> int:
 def main() -> int:
     freeze_support()
 
-    with maybe_manage_task_instrumentation(enable=os.environ.get("CHIA_INSTRUMENT_NODE") is not None):
+    with maybe_manage_task_instrumentation(enable=os.environ.get("TREE_INSTRUMENT_NODE") is not None):
         return async_run(async_main())
 
 

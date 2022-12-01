@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from chia.wallet.settings.settings_objects import BackupInitialized
+from tree.wallet.settings.settings_objects import BackupInitialized
 
 default_backup_initialized = BackupInitialized(False, False, False, True)
 

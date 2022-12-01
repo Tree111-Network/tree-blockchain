@@ -3,15 +3,15 @@ from __future__ import annotations
 import ipaddress
 from typing import Any, Dict, List, Optional
 
-from chia.rpc.rpc_server import Endpoint, EndpointResult
-from chia.seeder.crawler import Crawler
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
+from tree.rpc.rpc_server import Endpoint, EndpointResult
+from tree.seeder.crawler import Crawler
+from tree.util.ws_message import WsRpcMessage, create_payload_dict
 
 
 class CrawlerRpcApi:
     def __init__(self, crawler: Crawler):
         self.service = crawler
-        self.service_name = "chia_crawler"
+        self.service_name = "tree_crawler"
 
     def get_routes(self) -> Dict[str, Endpoint]:
         return {

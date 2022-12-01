@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
-from chia.types.peer_info import TimestampedPeerInfo
-from chia.util.streamable import Streamable, streamable
+from tree.types.peer_info import TimestampedPeerInfo
+from tree.util.streamable import Streamable, streamable
 
 """
 Protocol to introducer

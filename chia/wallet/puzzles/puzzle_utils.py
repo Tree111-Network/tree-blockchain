@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from chia.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_opcodes import ConditionOpcode
 
 
 def make_create_coin_condition(puzzle_hash, amount, memos: Optional[List[bytes]]) -> List:

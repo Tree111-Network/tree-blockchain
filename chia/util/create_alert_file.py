@@ -5,9 +5,9 @@ from typing import List
 
 from blspy import AugSchemeMPL
 
-from chia.util.ints import uint32
-from chia.util.keychain import Keychain
-from chia.util.validate_alert import create_alert_file, create_not_ready_alert_file, validate_alert_file
+from tree.util.ints import uint32
+from tree.util.keychain import Keychain
+from tree.util.validate_alert import create_alert_file, create_not_ready_alert_file, validate_alert_file
 
 bitcoin_hash = None
 bram_message = None

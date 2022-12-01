@@ -8,18 +8,18 @@ from keyring.backends.macOS import Keyring as MacKeyring
 from keyring.backends.Windows import WinVaultKeyring as WinKeyring
 from keyring.errors import KeyringError, PasswordDeleteError
 
-from chia.util.default_root import DEFAULT_KEYS_ROOT_PATH
-from chia.util.file_keyring import FileKeyring
+from tree.util.default_root import DEFAULT_KEYS_ROOT_PATH
+from tree.util.file_keyring import FileKeyring
 
 # We want to protect the keyring, even if a user-specified master passphrase isn't provided
 #
 # WARNING: Changing the default passphrase will prevent passphrase-less users from accessing
 # their existing keys. Using a new default passphrase requires migrating existing users to
 # the new passphrase.
-DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE = "$ chia passphrase set # all the cool kids are doing it!"
+DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE = "$ tree passphrase set # all the cool kids are doing it!"
 
-MASTER_PASSPHRASE_SERVICE_NAME = "Chia Passphrase"
-MASTER_PASSPHRASE_USER_NAME = "Chia Passphrase"
+MASTER_PASSPHRASE_SERVICE_NAME = "Tree Passphrase"
+MASTER_PASSPHRASE_USER_NAME = "Tree Passphrase"
 
 
 OSPassphraseStore = Union[MacKeyring, WinKeyring]
@@ -90,7 +90,7 @@ class KeyringWrapper:
         Grab the saved passphrase from the OS credential store (if available), otherwise
         use the default passphrase
         """
-        from chia.util.keychain import supports_os_passphrase_storage
+        from tree.util.keychain import supports_os_passphrase_storage
 
         passphrase: Optional[str] = None
 
@@ -169,8 +169,8 @@ class KeyringWrapper:
         """
         Sets a new master passphrase for the keyring
         """
-        from chia.util.errors import KeychainCurrentPassphraseIsInvalid
-        from chia.util.keychain import supports_os_passphrase_storage
+        from tree.util.errors import KeychainCurrentPassphraseIsInvalid
+        from tree.util.keychain import supports_os_passphrase_storage
 
         # Require a valid current_passphrase
         if (

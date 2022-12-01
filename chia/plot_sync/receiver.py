@@ -7,8 +7,8 @@ from typing import Any, Awaitable, Callable, Collection, Dict, List, Optional
 
 from typing_extensions import Protocol
 
-from chia.plot_sync.delta import Delta, PathListDelta, PlotListDelta
-from chia.plot_sync.exceptions import (
+from tree.plot_sync.delta import Delta, PathListDelta, PlotListDelta
+from tree.plot_sync.exceptions import (
     InvalidIdentifierError,
     InvalidLastSyncIdError,
     PlotAlreadyAvailableError,
@@ -16,8 +16,8 @@ from chia.plot_sync.exceptions import (
     PlotSyncException,
     SyncIdsMatchError,
 )
-from chia.plot_sync.util import ErrorCodes, State, T_PlotSyncMessage
-from chia.protocols.harvester_protocol import (
+from tree.plot_sync.util import ErrorCodes, State, T_PlotSyncMessage
+from tree.protocols.harvester_protocol import (
     Plot,
     PlotSyncDone,
     PlotSyncError,
@@ -27,12 +27,12 @@ from chia.protocols.harvester_protocol import (
     PlotSyncResponse,
     PlotSyncStart,
 )
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.server.outbound_message import make_msg
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import int16, uint32, uint64
-from chia.util.misc import get_list_or_len
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.server.outbound_message import make_msg
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import int16, uint32, uint64
+from tree.util.misc import get_list_or_len
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ class ReceiverUpdateCallback(Protocol):
 
 
 class Receiver:
-    _connection: WSChiaConnection
+    _connection: WSTreeConnection
     _current_sync: Sync
     _last_sync: Sync
     _plots: Dict[str, Plot]
@@ -86,7 +86,7 @@ class Receiver:
 
     def __init__(
         self,
-        connection: WSChiaConnection,
+        connection: WSTreeConnection,
         update_callback: ReceiverUpdateCallback,
     ) -> None:
         self._connection = connection
@@ -115,7 +115,7 @@ class Receiver:
         self._duplicates.clear()
         self._total_plot_size = 0
 
-    def connection(self) -> WSChiaConnection:
+    def connection(self) -> WSTreeConnection:
         return self._connection
 
     def current_sync(self) -> Sync:

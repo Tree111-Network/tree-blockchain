@@ -8,32 +8,32 @@ import pytest
 from aiosqlite import Error as AIOSqliteError
 from colorlog import getLogger
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.full_node.mempool_manager import MempoolManager
-from chia.full_node.weight_proof import WeightProofHandler
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.shared_protocol import Capability
-from chia.protocols.wallet_protocol import RequestAdditions, RespondAdditions, RespondBlockHeaders, SendTransaction
-from chia.server.outbound_message import Message, make_msg
-from chia.simulator.block_tools import test_constants
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.block_cache import BlockCache
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.wallet_sync_utils import PeerRequestException
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_weight_proof_handler import get_wp_fork_point
+from tree.consensus.block_record import BlockRecord
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.full_node.mempool_manager import MempoolManager
+from tree.full_node.weight_proof import WeightProofHandler
+from tree.protocols import full_node_protocol, wallet_protocol
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.protocols.shared_protocol import Capability
+from tree.protocols.wallet_protocol import RequestAdditions, RespondAdditions, RespondBlockHeaders, SendTransaction
+from tree.server.outbound_message import Message, make_msg
+from tree.simulator.block_tools import test_constants
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol
+from tree.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.peer_info import PeerInfo
+from tree.util.block_cache import BlockCache
+from tree.util.hash import std_hash
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.nft_wallet.nft_wallet import NFTWallet
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.util.compute_memos import compute_memos
+from tree.wallet.util.wallet_sync_utils import PeerRequestException
+from tree.wallet.util.wallet_types import AmountWithPuzzlehash
+from tree.wallet.wallet_coin_record import WalletCoinRecord
+from tree.wallet.wallet_weight_proof_handler import get_wp_fork_point
 from tests.connection_utils import disconnect_all, disconnect_all_and_reconnect
 from tests.util.wallet_is_synced import wallet_is_synced
 from tests.weight_proof.test_weight_proof import load_blocks_dont_validate
@@ -1116,7 +1116,7 @@ class TestWalletSync:
         # Create a new NFT and send it to the farmer's NFT wallet
         metadata = Program.to(
             [
-                ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+                ("u", ["https://www.tree111.com/img/branding/tree-logo.svg"]),
                 ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
             ]
         )

@@ -10,43 +10,43 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Type, T
 from blspy import AugSchemeMPL, G1Element, G2Element
 from clvm.casts import int_from_bytes, int_to_bytes
 
-from chia.protocols.wallet_protocol import CoinState
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.spend_bundle import SpendBundle
-from chia.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint16, uint32, uint64, uint128
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.did_wallet import did_wallet_puzzles
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.nft_wallet import nft_puzzles
-from chia.wallet.nft_wallet.nft_info import NFTCoinInfo, NFTWalletInfo
-from chia.wallet.nft_wallet.nft_puzzles import NFT_METADATA_UPDATER, create_ownership_layer_puzzle, get_metadata_and_phs
-from chia.wallet.nft_wallet.uncurry_nft import UncurriedNFT
-from chia.wallet.outer_puzzles import AssetType, construct_puzzle, match_puzzle, solve_puzzle
-from chia.wallet.payment import Payment
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from tree.protocols.wallet_protocol import CoinState
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.spend_bundle import SpendBundle
+from tree.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
+from tree.util.hash import std_hash
+from tree.util.ints import uint8, uint16, uint32, uint64, uint128
+from tree.wallet.derivation_record import DerivationRecord
+from tree.wallet.did_wallet import did_wallet_puzzles
+from tree.wallet.lineage_proof import LineageProof
+from tree.wallet.nft_wallet import nft_puzzles
+from tree.wallet.nft_wallet.nft_info import NFTCoinInfo, NFTWalletInfo
+from tree.wallet.nft_wallet.nft_puzzles import NFT_METADATA_UPDATER, create_ownership_layer_puzzle, get_metadata_and_phs
+from tree.wallet.nft_wallet.uncurry_nft import UncurriedNFT
+from tree.wallet.outer_puzzles import AssetType, construct_puzzle, match_puzzle, solve_puzzle
+from tree.wallet.payment import Payment
+from tree.wallet.puzzle_drivers import PuzzleInfo, Solver
+from tree.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
     puzzle_for_pk,
 )
-from chia.wallet.trading.offer import OFFER_MOD, OFFER_MOD_HASH, NotarizedPayment, Offer
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.debug_spend_bundle import disassemble
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.wallet_nft_store import WalletNftStore
+from tree.wallet.trading.offer import OFFER_MOD, OFFER_MOD_HASH, NotarizedPayment, Offer
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.uncurried_puzzle import uncurry_puzzle
+from tree.wallet.util.compute_memos import compute_memos
+from tree.wallet.util.debug_spend_bundle import disassemble
+from tree.wallet.util.transaction_type import TransactionType
+from tree.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
+from tree.wallet.wallet import Wallet
+from tree.wallet.wallet_coin_record import WalletCoinRecord
+from tree.wallet.wallet_info import WalletInfo
+from tree.wallet.wallet_nft_store import WalletNftStore
 
 _T_NFTWallet = TypeVar("_T_NFTWallet", bound="NFTWallet")
 
@@ -148,7 +148,7 @@ class NFTWallet:
             raise KeyError(f"Couldn't find coin with id: {nft_coin_id}")
         return nft_coin
 
-    async def coin_added(self, coin: Coin, height: uint32, peer: WSChiaConnection) -> None:
+    async def coin_added(self, coin: Coin, height: uint32, peer: WSTreeConnection) -> None:
         """Notification from wallet state manager that wallet has been received."""
         self.log.info(f"NFT wallet %s has been notified that {coin} was added", self.wallet_info.name)
         if await self.nft_store.exists(coin.name()):
@@ -166,7 +166,7 @@ class NFTWallet:
         assert cs is not None
         await self.puzzle_solution_received(cs, peer)
 
-    async def puzzle_solution_received(self, coin_spend: CoinSpend, peer: WSChiaConnection) -> None:
+    async def puzzle_solution_received(self, coin_spend: CoinSpend, peer: WSTreeConnection) -> None:
         self.log.debug("Puzzle solution received to wallet: %s", self.wallet_info)
         coin_name = coin_spend.coin.name()
         puzzle: Program = Program.from_bytes(bytes(coin_spend.puzzle_reveal))
@@ -523,7 +523,7 @@ class NFTWallet:
             pubkey, private = await self.wallet_state_manager.get_keys(puzzle_hash)
             synthetic_secret_key = calculate_synthetic_secret_key(private, DEFAULT_HIDDEN_PUZZLE_HASH)
             synthetic_pk = synthetic_secret_key.get_g1()
-            puzzle: Program = Program.to(("Chia Signed Message", message))
+            puzzle: Program = Program.to(("Tree Signed Message", message))
             return synthetic_pk, AugSchemeMPL.sign(synthetic_secret_key, puzzle.get_tree_hash())
         else:
             raise ValueError("Invalid NFT puzzle.")
@@ -572,16 +572,16 @@ class NFTWallet:
     async def create_tandem_xch_tx(
         self, fee: uint64, announcement_to_assert: Optional[Announcement] = None
     ) -> TransactionRecord:
-        chia_coins = await self.standard_wallet.select_coins(fee)
-        chia_tx = await self.standard_wallet.generate_signed_transaction(
+        tree_coins = await self.standard_wallet.select_coins(fee)
+        tree_tx = await self.standard_wallet.generate_signed_transaction(
             uint64(0),
             (await self.standard_wallet.get_new_puzzlehash()),
             fee=fee,
-            coins=chia_coins,
+            coins=tree_coins,
             coin_announcements_to_consume={announcement_to_assert} if announcement_to_assert is not None else None,
         )
-        assert chia_tx.spend_bundle is not None
-        return chia_tx
+        assert tree_tx.spend_bundle is not None
+        return tree_tx
 
     async def generate_signed_transaction(
         self,
@@ -614,7 +614,7 @@ class NFTWallet:
 
         payment_sum = sum([p.amount for p in payments])
 
-        unsigned_spend_bundle, chia_tx = await self.generate_unsigned_spendbundle(
+        unsigned_spend_bundle, tree_tx = await self.generate_unsigned_spendbundle(
             payments,
             fee,
             coins=coins,
@@ -628,9 +628,9 @@ class NFTWallet:
         )
         spend_bundle = await self.sign(unsigned_spend_bundle)
         spend_bundle = SpendBundle.aggregate([spend_bundle] + additional_bundles)
-        if chia_tx is not None and chia_tx.spend_bundle is not None:
-            spend_bundle = SpendBundle.aggregate([spend_bundle, chia_tx.spend_bundle])
-            chia_tx = dataclasses.replace(chia_tx, spend_bundle=None)
+        if tree_tx is not None and tree_tx.spend_bundle is not None:
+            spend_bundle = SpendBundle.aggregate([spend_bundle, tree_tx.spend_bundle])
+            tree_tx = dataclasses.replace(tree_tx, spend_bundle=None)
 
         tx_list = [
             TransactionRecord(
@@ -653,8 +653,8 @@ class NFTWallet:
             ),
         ]
 
-        if chia_tx is not None:
-            tx_list.append(chia_tx)
+        if tree_tx is not None:
+            tx_list.append(tree_tx)
 
         return tx_list
 
@@ -696,10 +696,10 @@ class NFTWallet:
 
         if fee > 0:
             announcement_to_make = nft_coin.coin.name()
-            chia_tx = await self.create_tandem_xch_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
+            tree_tx = await self.create_tandem_xch_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
         else:
             announcement_to_make = None
-            chia_tx = None
+            tree_tx = None
 
         innersol: Program = self.standard_wallet.make_solution(
             primaries=primaries,
@@ -738,7 +738,7 @@ class NFTWallet:
 
         nft_spend_bundle = SpendBundle([coin_spend], G2Element())
 
-        return nft_spend_bundle, chia_tx
+        return nft_spend_bundle, tree_tx
 
     @staticmethod
     def royalty_calculation(
@@ -1591,6 +1591,6 @@ class NFTWallet:
 
 
 if TYPE_CHECKING:
-    from chia.wallet.wallet_protocol import WalletProtocol
+    from tree.wallet.wallet_protocol import WalletProtocol
 
     _dummy: WalletProtocol = NFTWallet()

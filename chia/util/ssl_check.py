@@ -7,8 +7,8 @@ from logging import Logger
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
-from chia.util.config import load_config, traverse_dict
-from chia.util.permissions import octal_mode_string, verify_file_permissions
+from tree.util.config import load_config, traverse_dict
+from tree.util.permissions import octal_mode_string, verify_file_permissions
 
 DEFAULT_PERMISSIONS_CERT_FILE: int = 0o644
 DEFAULT_PERMISSIONS_KEY_FILE: int = 0o600
@@ -20,7 +20,7 @@ RESTRICT_MASK_KEY_FILE: int = (
 )  # 0o077
 
 CERT_CONFIG_KEY_PATHS = [
-    "chia_ssl_ca:crt",
+    "tree_ssl_ca:crt",
     "daemon_ssl:private_crt",
     "farmer:ssl:private_crt",
     "farmer:ssl:public_crt",
@@ -28,7 +28,7 @@ CERT_CONFIG_KEY_PATHS = [
     "full_node:ssl:public_crt",
     "data_layer:ssl:private_crt",
     "data_layer:ssl:public_crt",
-    "harvester:chia_ssl_ca:crt",
+    "harvester:tree_ssl_ca:crt",
     "harvester:private_ssl_ca:crt",
     "harvester:ssl:private_crt",
     "introducer:ssl:public_crt",
@@ -40,13 +40,13 @@ CERT_CONFIG_KEY_PATHS = [
     "wallet:ssl:public_crt",
 ]
 KEY_CONFIG_KEY_PATHS = [
-    "chia_ssl_ca:key",
+    "tree_ssl_ca:key",
     "daemon_ssl:private_key",
     "farmer:ssl:private_key",
     "farmer:ssl:public_key",
     "full_node:ssl:private_key",
     "full_node:ssl:public_key",
-    "harvester:chia_ssl_ca:key",
+    "harvester:tree_ssl_ca:key",
     "harvester:private_ssl_ca:key",
     "harvester:ssl:private_key",
     "introducer:ssl:public_key",
@@ -65,7 +65,7 @@ warned_ssl_files: Set[Path] = set()
 
 def get_all_ssl_file_paths(root_path: Path) -> Tuple[List[Path], List[Path]]:
     """Lookup config values and append to a list of files whose permissions we need to check"""
-    from chia.ssl.create_ssl import get_mozilla_ca_crt
+    from tree.ssl.create_ssl import get_mozilla_ca_crt
 
     all_certs: List[Path] = []
     all_keys: List[Path] = []
@@ -151,7 +151,7 @@ def check_ssl(root_path: Path) -> None:
                 get_ssl_perm_warning(path, actual_permissions, expected_permissions)
             )  # lgtm [py/clear-text-logging-sensitive-data]
         print("One or more SSL files were found with permission issues.")
-        print("Run `chia init --fix-ssl-permissions` to fix issues.")
+        print("Run `tree init --fix-ssl-permissions` to fix issues.")
 
 
 def check_and_fix_permissions_for_ssl_file(file: Path, mask: int, updated_mode: int) -> Tuple[bool, bool]:

@@ -5,19 +5,19 @@ import logging
 from pathlib import Path
 from typing import Any, AsyncGenerator, AsyncIterator, Dict, List, Optional, Tuple, Union
 
-from chia.consensus.constants import ConsensusConstants
-from chia.daemon.server import WebSocketServer
-from chia.farmer.farmer import Farmer
-from chia.full_node.full_node import FullNode
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.harvester.harvester import Harvester
-from chia.protocols.shared_protocol import Capability
-from chia.server.server import ChiaServer
-from chia.server.start_service import Service
-from chia.simulator.block_tools import BlockTools, create_block_tools_async, test_constants
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.keyring import TempKeyring
-from chia.simulator.setup_services import (
+from tree.consensus.constants import ConsensusConstants
+from tree.daemon.server import WebSocketServer
+from tree.farmer.farmer import Farmer
+from tree.full_node.full_node import FullNode
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.harvester.harvester import Harvester
+from tree.protocols.shared_protocol import Capability
+from tree.server.server import TreeServer
+from tree.server.start_service import Service
+from tree.simulator.block_tools import BlockTools, create_block_tools_async, test_constants
+from tree.simulator.full_node_simulator import FullNodeSimulator
+from tree.simulator.keyring import TempKeyring
+from tree.simulator.setup_services import (
     setup_daemon,
     setup_farmer,
     setup_full_node,
@@ -28,17 +28,17 @@ from chia.simulator.setup_services import (
     setup_vdf_clients,
     setup_wallet_node,
 )
-from chia.simulator.socket import find_available_listen_port
-from chia.simulator.time_out_assert import time_out_assert_custom_interval
-from chia.timelord.timelord import Timelord
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint32
-from chia.util.keychain import Keychain
-from chia.wallet.wallet_node import WalletNode
+from tree.simulator.socket import find_available_listen_port
+from tree.simulator.time_out_assert import time_out_assert_custom_interval
+from tree.timelord.timelord import Timelord
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.peer_info import PeerInfo
+from tree.util.hash import std_hash
+from tree.util.ints import uint16, uint32
+from tree.util.keychain import Keychain
+from tree.wallet.wallet_node import WalletNode
 
-SimulatorsAndWallets = Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools]
+SimulatorsAndWallets = Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, TreeServer]], BlockTools]
 SimulatorsAndWalletsServices = Tuple[List[Service[FullNode]], List[Service[WalletNode]], BlockTools]
 
 
@@ -64,7 +64,7 @@ async def _teardown_nodes(node_aiters: List[AsyncGenerator[Any, None]]) -> None:
 
 async def setup_two_nodes(
     consensus_constants: ConsensusConstants, db_version: int, self_hostname: str
-) -> AsyncGenerator[Tuple[FullNodeAPI, FullNodeAPI, ChiaServer, ChiaServer, BlockTools], None]:
+) -> AsyncGenerator[Tuple[FullNodeAPI, FullNodeAPI, TreeServer, TreeServer, BlockTools], None]:
     """
     Setup and teardown of two full nodes, with blockchains and separate DBs.
     """
@@ -140,7 +140,7 @@ async def setup_node_and_wallet(
     key_seed: Optional[bytes32] = None,
     db_version: int = 1,
     disable_capabilities: Optional[List[Capability]] = None,
-) -> AsyncGenerator[Tuple[FullNodeAPI, WalletNode, ChiaServer, ChiaServer, BlockTools], None]:
+) -> AsyncGenerator[Tuple[FullNodeAPI, WalletNode, TreeServer, TreeServer, BlockTools], None]:
     with TempKeyring(populate=True) as keychain:
         btools = await create_block_tools_async(constants=test_constants, keychain=keychain)
         full_node_iter = setup_full_node(
@@ -185,7 +185,7 @@ async def setup_simulators_and_wallets(
     db_version: int = 1,
     config_overrides: Optional[Dict[str, int]] = None,
     disable_capabilities: Optional[List[Capability]] = None,
-) -> AsyncGenerator[Tuple[List[FullNodeAPI], List[Tuple[WalletNode, ChiaServer]], BlockTools], None]:
+) -> AsyncGenerator[Tuple[List[FullNodeAPI], List[Tuple[WalletNode, TreeServer]], BlockTools], None]:
     with TempKeyring(populate=True) as keychain1, TempKeyring(populate=True) as keychain2:
         res = await setup_simulators_and_wallets_inner(
             db_version,
@@ -382,7 +382,7 @@ async def setup_full_system(
     b_tools: Optional[BlockTools] = None,
     b_tools_1: Optional[BlockTools] = None,
     db_version: int = 1,
-) -> AsyncGenerator[Tuple[Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, ChiaServer], None]:
+) -> AsyncGenerator[Tuple[Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, TreeServer], None]:
     with TempKeyring(populate=True) as keychain1, TempKeyring(populate=True) as keychain2:
         daemon_ws, node_iters, ret = await setup_full_system_inner(
             b_tools, b_tools_1, False, consensus_constants, db_version, keychain1, keychain2, shared_b_tools
@@ -401,7 +401,7 @@ async def setup_full_system_connect_to_deamon(
     db_version: int = 1,
 ) -> AsyncGenerator[
     Tuple[
-        Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, ChiaServer, Optional[WebSocketServer]
+        Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, TreeServer, Optional[WebSocketServer]
     ],
     None,
 ]:
@@ -427,7 +427,7 @@ async def setup_full_system_inner(
 ) -> Tuple[
     Optional[WebSocketServer],
     List[AsyncGenerator[object, None]],
-    Tuple[Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, ChiaServer],
+    Tuple[Any, Any, Harvester, Farmer, Any, Service[Timelord], object, object, Any, TreeServer],
 ]:
     if b_tools is None:
         b_tools = await create_block_tools_async(constants=test_constants, keychain=keychain1)

@@ -10,18 +10,18 @@ from typing import Any, Dict, List, Optional, Tuple
 from aiohttp import ClientConnectorError, ClientSession
 from blspy import AugSchemeMPL, PrivateKey
 
-from chia.cmds.init_funcs import check_keys
-from chia.daemon.client import DaemonProxy
-from chia.daemon.keychain_server import (
+from tree.cmds.init_funcs import check_keys
+from tree.daemon.client import DaemonProxy
+from tree.daemon.keychain_server import (
     KEYCHAIN_ERR_KEY_NOT_FOUND,
     KEYCHAIN_ERR_KEYERROR,
     KEYCHAIN_ERR_LOCKED,
     KEYCHAIN_ERR_MALFORMED_REQUEST,
     KEYCHAIN_ERR_NO_KEYS,
 )
-from chia.server.server import ssl_context_for_client
-from chia.util.config import load_config
-from chia.util.errors import (
+from tree.server.server import ssl_context_for_client
+from tree.util.config import load_config
+from tree.util.errors import (
     KeychainIsEmpty,
     KeychainIsLocked,
     KeychainKeyNotFound,
@@ -29,8 +29,8 @@ from chia.util.errors import (
     KeychainMalformedResponse,
     KeychainProxyConnectionTimeout,
 )
-from chia.util.keychain import Keychain, KeyData, bytes_to_mnemonic, mnemonic_to_seed
-from chia.util.ws_message import WsRpcMessage
+from tree.util.keychain import Keychain, KeyData, bytes_to_mnemonic, mnemonic_to_seed
+from tree.util.ws_message import WsRpcMessage
 
 
 class KeychainProxy(DaemonProxy):

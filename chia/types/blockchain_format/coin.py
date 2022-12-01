@@ -4,9 +4,9 @@ from typing import List, Union
 
 from chia_rs import Coin
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.hash import std_hash
-from chia.util.ints import uint64
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.hash import std_hash
+from tree.util.ints import uint64
 
 __all__ = ["Coin", "coin_as_list", "hash_coin_ids"]
 

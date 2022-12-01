@@ -5,12 +5,12 @@ from typing import List, Optional, Type, TypeVar, Union
 
 from aiosqlite import Row
 
-from chia.data_layer.data_layer_wallet import Mirror, SingletonRecord
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.lineage_proof import LineageProof
+from tree.data_layer.data_layer_wallet import Mirror, SingletonRecord
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.db_wrapper import DBWrapper2
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.lineage_proof import LineageProof
 
 _T_DataLayerStore = TypeVar("_T_DataLayerStore", bound="DataLayerStore")
 

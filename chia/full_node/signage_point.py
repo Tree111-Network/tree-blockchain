@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from chia.types.blockchain_format.vdf import VDFInfo, VDFProof
-from chia.util.streamable import Streamable, streamable
+from tree.types.blockchain_format.vdf import VDFInfo, VDFProof
+from tree.util.streamable import Streamable, streamable
 
 
 @streamable

@@ -9,37 +9,37 @@ from blspy import G1Element, G2Element
 from clvm.casts import int_to_bytes
 from clvm_tools import binutils
 
-from chia.consensus.condition_costs import ConditionCost
-from chia.consensus.cost_calculator import NPCResult
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.full_node.mempool import Mempool
-from chia.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from chia.full_node.pending_tx_cache import PendingTxCache
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.protocols.wallet_protocol import TransactionAck
-from chia.server.outbound_message import Message
-from chia.server.ws_connection import WSChiaConnection
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert
-from chia.simulator.wallet_tools import WalletTool
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import INFINITE_COST, Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32, bytes48
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.generator_types import BlockGenerator
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.mempool_item import MempoolItem
-from chia.types.spend_bundle import SpendBundle
-from chia.types.spend_bundle_conditions import Spend, SpendBundleConditions
-from chia.util.api_decorators import api_request
-from chia.util.condition_tools import conditions_for_solution, pkm_pairs
-from chia.util.errors import Err
-from chia.util.hash import std_hash
-from chia.util.ints import uint32, uint64
-from chia.util.recursive_replace import recursive_replace
+from tree.consensus.condition_costs import ConditionCost
+from tree.consensus.cost_calculator import NPCResult
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.full_node.mempool import Mempool
+from tree.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from tree.full_node.pending_tx_cache import PendingTxCache
+from tree.protocols import full_node_protocol, wallet_protocol
+from tree.protocols.wallet_protocol import TransactionAck
+from tree.server.outbound_message import Message
+from tree.server.ws_connection import WSTreeConnection
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol
+from tree.simulator.time_out_assert import time_out_assert
+from tree.simulator.wallet_tools import WalletTool
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import INFINITE_COST, Program, SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32, bytes48
+from tree.types.coin_spend import CoinSpend
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_with_args import ConditionWithArgs
+from tree.types.generator_types import BlockGenerator
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.types.mempool_item import MempoolItem
+from tree.types.spend_bundle import SpendBundle
+from tree.types.spend_bundle_conditions import Spend, SpendBundleConditions
+from tree.util.api_decorators import api_request
+from tree.util.condition_tools import conditions_for_solution, pkm_pairs
+from tree.util.errors import Err
+from tree.util.hash import std_hash
+from tree.util.ints import uint32, uint64
+from tree.util.recursive_replace import recursive_replace
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 from tests.connection_utils import add_dummy_connection, connect_and_get_peer
 from tests.core.node_height import node_height_at_least
@@ -163,7 +163,7 @@ class TestMempool:
 async def respond_transaction(
     self: FullNodeAPI,
     tx: full_node_protocol.RespondTransaction,
-    peer: WSChiaConnection,
+    peer: WSTreeConnection,
     tx_bytes: bytes = b"",
     test: bool = False,
 ) -> Tuple[MempoolInclusionStatus, Optional[Err]]:

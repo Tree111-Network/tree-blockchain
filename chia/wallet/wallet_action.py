@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from chia.util.ints import uint32
-from chia.wallet.util.wallet_types import WalletType
+from tree.util.ints import uint32
+from tree.wallet.util.wallet_types import WalletType
 
 
 @dataclass(frozen=True)

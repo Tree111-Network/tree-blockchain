@@ -4,19 +4,19 @@ from typing import Dict, List, Optional, Any
 
 import aiohttp
 
-from chia.server.outbound_message import NodeType
-from chia.server.server import ssl_context_for_client
-from chia.server.ssl_context import private_ssl_ca_paths
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint16
+from tree.server.outbound_message import NodeType
+from tree.server.server import ssl_context_for_client
+from tree.server.ssl_context import private_ssl_ca_paths
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.ints import uint16
 
 
 class RpcClient:
     """
-    Client to Chia RPC, connects to a local service. Uses HTTP/JSON, and converts back from
+    Client to Tree RPC, connects to a local service. Uses HTTP/JSON, and converts back from
     JSON into native python objects before returning. All api calls use POST requests.
-    Note that this is not the same as the peer protocol, or wallet protocol (which run Chia's
+    Note that this is not the same as the peer protocol, or wallet protocol (which run Tree's
     protocol on top of TCP), it's a separate protocol on top of HTTP that provides easy access
     to the full node.
     """

@@ -5,23 +5,23 @@ from typing import List, Tuple, Union
 
 import pytest
 
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.wallet_protocol import RespondFeeEstimates
-from chia.server.server import ChiaServer
-from chia.simulator.block_tools import BlockTools
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.time_out_assert import time_out_assert
-from chia.util.ints import uint64
-from chia.wallet.wallet import Wallet
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.protocols import full_node_protocol, wallet_protocol
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.protocols.wallet_protocol import RespondFeeEstimates
+from tree.server.server import TreeServer
+from tree.simulator.block_tools import BlockTools
+from tree.simulator.full_node_simulator import FullNodeSimulator
+from tree.simulator.time_out_assert import time_out_assert
+from tree.util.ints import uint64
+from tree.wallet.wallet import Wallet
 from tests.core.node_height import node_height_at_least
 
 
 @pytest.mark.asyncio
 async def test_protocol_messages(
     wallet_node_sim_and_wallet: Tuple[
-        List[Union[FullNodeAPI, FullNodeSimulator]], List[Tuple[Wallet, ChiaServer]], BlockTools
+        List[Union[FullNodeAPI, FullNodeSimulator]], List[Tuple[Wallet, TreeServer]], BlockTools
     ]
 ) -> None:
     full_nodes, wallets, bt = wallet_node_sim_and_wallet

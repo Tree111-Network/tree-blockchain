@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Dict
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.mempool_item import MempoolItem
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.mempool_item import MempoolItem
 
 
 class PendingTxCache:

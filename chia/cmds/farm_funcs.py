@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from chia.cmds.cmds_util import get_any_service_client
-from chia.cmds.units import units
-from chia.consensus.block_record import BlockRecord
-from chia.rpc.farmer_rpc_client import FarmerRpcClient
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.util.misc import format_bytes, format_minutes
-from chia.util.network import is_localhost
+from tree.cmds.cmds_util import get_any_service_client
+from tree.cmds.units import units
+from tree.consensus.block_record import BlockRecord
+from tree.rpc.farmer_rpc_client import FarmerRpcClient
+from tree.rpc.full_node_rpc_client import FullNodeRpcClient
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.util.misc import format_bytes, format_minutes
+from tree.util.network import is_localhost
 
 SECONDS_PER_BLOCK = (24 * 3600) / 4608
 
@@ -124,9 +124,9 @@ async def summary(
         print("Farming")
 
     if amounts is not None:
-        print(f"Total chia farmed: {amounts['farmed_amount'] / units['chia']}")
-        print(f"User transaction fees: {amounts['fee_amount'] / units['chia']}")
-        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['chia']}")
+        print(f"Total tree farmed: {amounts['farmed_amount'] / units['tree']}")
+        print(f"User transaction fees: {amounts['fee_amount'] / units['tree']}")
+        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['tree']}")
         print(f"Last height farmed: {amounts['last_height_farmed']}")
 
     class PlotStats:
@@ -190,8 +190,8 @@ async def summary(
 
     if amounts is None:
         if wallet_not_running:
-            print("For details on farmed rewards and fees you should run 'chia start wallet' and 'chia wallet show'")
+            print("For details on farmed rewards and fees you should run 'tree start wallet' and 'tree wallet show'")
         elif wallet_not_ready:
-            print("For details on farmed rewards and fees you should run 'chia wallet show'")
+            print("For details on farmed rewards and fees you should run 'tree wallet show'")
     else:
-        print("Note: log into your key using 'chia wallet show' to see rewards for each key")
+        print("Note: log into your key using 'tree wallet show' to see rewards for each key")

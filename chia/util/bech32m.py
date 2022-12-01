@@ -25,7 +25,7 @@ from __future__ import annotations
 """Reference implementation for Bech32m and segwit addresses."""
 from typing import Iterable, List, Optional, Tuple
 
-from chia.types.blockchain_format.sized_bytes import bytes32
+from tree.types.blockchain_format.sized_bytes import bytes32
 
 CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l"
 

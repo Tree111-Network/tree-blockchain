@@ -4,14 +4,14 @@ import sys
 from decimal import Decimal
 from typing import Any, Dict, List, Tuple, Union
 
-from chia.cmds.wallet_funcs import get_mojo_per_unit, get_wallet_type, print_balance
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.ints import uint64, uint128
-from chia.wallet.transaction_record import TransactionRecord
+from tree.cmds.wallet_funcs import get_mojo_per_unit, get_wallet_type, print_balance
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from tree.util.ints import uint64, uint128
+from tree.wallet.transaction_record import TransactionRecord
 
 
 async def async_list(args: Dict[str, Any], wallet_client: WalletRpcClient, fingerprint: int) -> None:
@@ -170,7 +170,7 @@ async def async_combine(args: Dict[str, Any], wallet_client: WalletRpcClient, fi
     )
     tx_id = transaction.name.hex()
     print(f"Transaction sent: {tx_id}")
-    print(f"To get status, use command: chia wallet get_transaction -f {fingerprint} -tx 0x{tx_id}")
+    print(f"To get status, use command: tree wallet get_transaction -f {fingerprint} -tx 0x{tx_id}")
 
 
 async def async_split(args: Dict[str, Any], wallet_client: WalletRpcClient, fingerprint: int) -> None:
@@ -215,4 +215,4 @@ async def async_split(args: Dict[str, Any], wallet_client: WalletRpcClient, fing
     )
     tx_id = transaction.name.hex()
     print(f"Transaction sent: {tx_id}")
-    print(f"To get status, use command: chia wallet get_transaction -f {fingerprint} -tx 0x{tx_id}")
+    print(f"To get status, use command: tree wallet get_transaction -f {fingerprint} -tx 0x{tx_id}")

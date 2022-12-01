@@ -10,15 +10,15 @@ from typing import Dict
 import pytest
 from clvm.casts import int_to_bytes
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.pot_iterations import is_overflow_block
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.protocols import full_node_protocol as fnp
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.unfinished_block import UnfinishedBlock
-from chia.util.ints import uint64
+from tree.consensus.block_record import BlockRecord
+from tree.consensus.pot_iterations import is_overflow_block
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.protocols import full_node_protocol as fnp
+from tree.simulator.time_out_assert import time_out_assert
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_with_args import ConditionWithArgs
+from tree.types.unfinished_block import UnfinishedBlock
+from tree.util.ints import uint64
 from tests.connection_utils import add_dummy_connection
 from tests.core.full_node.stores.test_coin_store import get_future_reward_coins
 from tests.core.node_height import node_height_at_least

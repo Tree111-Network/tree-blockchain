@@ -4,11 +4,11 @@ from typing import List
 
 from clvm.casts import int_from_bytes
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.util.condition_tools import conditions_dict_for_solution, created_outputs_for_conditions_dict
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.util.condition_tools import conditions_dict_for_solution, created_outputs_for_conditions_dict
 
 
 def additions_for_solution(

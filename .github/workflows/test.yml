@@ -37,7 +37,7 @@ jobs:
           python tests/build-job-matrix.py --per directory --verbose > matrix.json
           cat matrix.json
           echo configuration=$(cat matrix.json) >> $GITHUB_OUTPUT
-          echo matrix_mode=${{ ( github.repository_owner == 'Chia-Network' && github.repository != 'Chia-Network/chia-blockchain' ) && 'limited' || 'all' }} >> $GITHUB_OUTPUT
+          echo matrix_mode=${{ ( github.repository_owner == 'Chia-Network' && github.repository != 'Tree111-Network/tree-blockchain' ) && 'limited' || 'all' }} >> $GITHUB_OUTPUT
 
     outputs:
       configuration: ${{ steps.configure.outputs.configuration }}
@@ -133,9 +133,9 @@ jobs:
           coverage xml --rcfile=.coveragerc --data-file coverage-reports/.coverage -o coverage-reports/coverage.xml
           coverage html --rcfile=.coveragerc --data-file coverage-reports/.coverage --directory coverage-reports/html/
 
-      - name: Coverage report (chia/)
+      - name: Coverage report (tree/)
         run: |
-          coverage report --rcfile=.coveragerc --data-file coverage-reports/.coverage --include='chia/*' --show-missing | tee coverage-reports/coverage-chia-stdout
+          coverage report --rcfile=.coveragerc --data-file coverage-reports/.coverage --include='tree/*' --show-missing | tee coverage-reports/coverage-tree-stdout
 
       - name: Coverage report (tests/)
         run: |

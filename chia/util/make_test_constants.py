@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Dict
 
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
+from tree.consensus.constants import ConsensusConstants
+from tree.consensus.default_constants import DEFAULT_CONSTANTS
 
 
 def make_test_constants(test_constants_overrides: Dict) -> ConsensusConstants:

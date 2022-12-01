@@ -13,23 +13,23 @@ from aiohttp.client import ClientWebSocketResponse
 from aiohttp.web import WebSocketResponse
 from typing_extensions import Protocol, final
 
-from chia.cmds.init_funcs import chia_full_version_str
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.protocol_state_machine import message_response_ok
-from chia.protocols.protocol_timing import INTERNAL_PROTOCOL_ERROR_BAN_SECONDS
-from chia.protocols.shared_protocol import Capability, Handshake
-from chia.server.outbound_message import Message, NodeType, make_msg
-from chia.server.rate_limits import RateLimiter
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.api_decorators import get_metadata
-from chia.util.errors import Err, ProtocolError
-from chia.util.ints import uint8, uint16
-from chia.util.log_exceptions import log_exceptions
+from tree.cmds.init_funcs import tree_full_version_str
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.protocols.protocol_state_machine import message_response_ok
+from tree.protocols.protocol_timing import INTERNAL_PROTOCOL_ERROR_BAN_SECONDS
+from tree.protocols.shared_protocol import Capability, Handshake
+from tree.server.outbound_message import Message, NodeType, make_msg
+from tree.server.rate_limits import RateLimiter
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.peer_info import PeerInfo
+from tree.util.api_decorators import get_metadata
+from tree.util.errors import Err, ProtocolError
+from tree.util.ints import uint8, uint16
+from tree.util.log_exceptions import log_exceptions
 
 # Each message is prepended with LENGTH_BYTES bytes specifying the length
-from chia.util.network import class_for_type, is_localhost
-from chia.util.streamable import Streamable
+from tree.util.network import class_for_type, is_localhost
+from tree.util.streamable import Streamable
 
 # Max size 2^(8*4) which is around 4GiB
 LENGTH_BYTES: int = 4
@@ -40,7 +40,7 @@ WebSocket = Union[WebSocketResponse, ClientWebSocketResponse]
 class ConnectionClosedCallbackProtocol(Protocol):
     def __call__(
         self,
-        connection: WSChiaConnection,
+        connection: WSTreeConnection,
         ban_time: int,
         closed_connection: bool = ...,
     ) -> None:
@@ -49,7 +49,7 @@ class ConnectionClosedCallbackProtocol(Protocol):
 
 @final
 @dataclass
-class WSChiaConnection:
+class WSTreeConnection:
     """
     Represents a connection to another node. Local host and port are ours, while peer host and
     port are the host and port of the peer that we are connected to. Node_id and connection_type are
@@ -74,10 +74,10 @@ class WSChiaConnection:
     is_outbound: bool
 
     # Messaging
-    incoming_queue: asyncio.Queue[Tuple[Message, WSChiaConnection]]
+    incoming_queue: asyncio.Queue[Tuple[Message, WSTreeConnection]]
     outgoing_queue: asyncio.Queue[Message] = field(default_factory=asyncio.Queue)
 
-    # ChiaConnection metrics
+    # TreeConnection metrics
     creation_time: float = field(default_factory=time.time)
     bytes_read: int = 0
     bytes_written: int = 0
@@ -96,7 +96,7 @@ class WSChiaConnection:
     connection_type: Optional[NodeType] = None
     request_nonce: uint16 = uint16(0)
     peer_capabilities: List[Capability] = field(default_factory=list)
-    # Used by the Chia Seeder.
+    # Used by the Tree Seeder.
     version: str = field(default_factory=str)
     protocol_version: str = field(default_factory=str)
 
@@ -109,7 +109,7 @@ class WSChiaConnection:
         log: logging.Logger,
         is_outbound: bool,
         peer_host: str,
-        incoming_queue: asyncio.Queue[Tuple[Message, WSChiaConnection]],
+        incoming_queue: asyncio.Queue[Tuple[Message, WSTreeConnection]],
         close_callback: Optional[ConnectionClosedCallbackProtocol],
         peer_id: bytes32,
         inbound_rate_limit_percent: int,
@@ -117,7 +117,7 @@ class WSChiaConnection:
         local_capabilities_for_handshake: List[Tuple[uint16, str]],
         close_event: Optional[asyncio.Event] = None,
         session: Optional[ClientSession] = None,
-    ) -> WSChiaConnection:
+    ) -> WSTreeConnection:
 
         assert ws._writer is not None
         peername = ws._writer.transport.get_extra_info("peername")
@@ -168,7 +168,7 @@ class WSChiaConnection:
             Handshake(
                 network_id,
                 protocol_version,
-                chia_full_version_str(),
+                tree_full_version_str(),
                 uint16(server_port),
                 uint8(local_type.value),
                 self.local_capabilities_for_handshake,
@@ -531,7 +531,7 @@ class WSChiaConnection:
             await asyncio.sleep(3)
         return None
 
-    # Used by the Chia Seeder.
+    # Used by the Tree Seeder.
     def get_version(self) -> str:
         return self.version
 

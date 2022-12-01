@@ -5,24 +5,24 @@ from typing import Any, Dict, List, Optional
 import pytest
 from blspy import G2Element
 
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.util.ints import uint64
-from chia.wallet.cat_wallet.cat_utils import (
+from tree.types.announcement import Announcement
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_spend import CoinSpend
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.types.spend_bundle import SpendBundle
+from tree.util.ints import uint64
+from tree.wallet.cat_wallet.cat_utils import (
     SpendableCAT,
     construct_cat_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
 )
-from chia.wallet.outer_puzzles import AssetType
-from chia.wallet.payment import Payment
-from chia.wallet.puzzle_drivers import PuzzleInfo
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.trading.offer import NotarizedPayment, Offer
+from tree.wallet.outer_puzzles import AssetType
+from tree.wallet.payment import Payment
+from tree.wallet.puzzle_drivers import PuzzleInfo
+from tree.wallet.puzzles.cat_loader import CAT_MOD
+from tree.wallet.trading.offer import NotarizedPayment, Offer
 from tests.clvm.benchmark_costs import cost_of_spend_bundle
 
 acs = Program.to(1)
@@ -178,7 +178,7 @@ class TestOfferLifecycle:
                 "blue": [3000],
             }
             all_coins: Dict[Optional[str], List[Coin]] = await generate_coins(sim, sim_client, coins_needed)
-            chia_coins: List[Coin] = all_coins[None]
+            tree_coins: List[Coin] = all_coins[None]
             red_coins: List[Coin] = all_coins["red"]
             blue_coins: List[Coin] = all_coins["blue"]
 
@@ -196,20 +196,20 @@ class TestOfferLifecycle:
                 driver_dict_as_infos[key.hex()] = value.info
 
             # Create an XCH Offer for RED
-            chia_requested_payments: Dict[Optional[bytes32], List[Payment]] = {
+            tree_requested_payments: Dict[Optional[bytes32], List[Payment]] = {
                 str_to_tail_hash("red"): [
                     Payment(acs_ph, 100, [b"memo"]),
                     Payment(acs_ph, 200, [b"memo"]),
                 ]
             }
 
-            chia_requested_payments: Dict[Optional[bytes32], List[NotarizedPayment]] = Offer.notarize_payments(
-                chia_requested_payments, chia_coins
+            tree_requested_payments: Dict[Optional[bytes32], List[NotarizedPayment]] = Offer.notarize_payments(
+                tree_requested_payments, tree_coins
             )
-            chia_announcements: List[Announcement] = Offer.calculate_announcements(chia_requested_payments, driver_dict)
-            chia_secured_bundle: SpendBundle = generate_secure_bundle(chia_coins, chia_announcements, 1000)
-            chia_offer = Offer(chia_requested_payments, chia_secured_bundle, driver_dict)
-            assert not chia_offer.is_valid()
+            tree_announcements: List[Announcement] = Offer.calculate_announcements(tree_requested_payments, driver_dict)
+            tree_secured_bundle: SpendBundle = generate_secure_bundle(tree_coins, tree_announcements, 1000)
+            tree_offer = Offer(tree_requested_payments, tree_secured_bundle, driver_dict)
+            assert not tree_offer.is_valid()
 
             # Create a RED Offer for XCH
             red_coins_1 = red_coins[0:1]
@@ -250,7 +250,7 @@ class TestOfferLifecycle:
             assert not red_offer_2.is_valid()
 
             # Test aggregation of offers
-            new_offer = Offer.aggregate([chia_offer, red_offer, red_offer_2])
+            new_offer = Offer.aggregate([tree_offer, red_offer, red_offer_2])
             assert new_offer.get_offered_amounts() == {None: 1000, str_to_tail_hash("red"): 350}
             assert new_offer.get_requested_amounts() == {None: 700, str_to_tail_hash("red"): 300}
             assert new_offer.is_valid()

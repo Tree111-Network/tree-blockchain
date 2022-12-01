@@ -13,38 +13,38 @@ from typing import Any, Callable, Dict, Iterator, List, Optional, Set, Tuple
 import aiosqlite
 from blspy import G1Element, PrivateKey
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.consensus.coinbase import farmer_parent_id, pool_parent_id
-from chia.consensus.constants import ConsensusConstants
-from chia.data_layer.data_layer_wallet import DataLayerWallet
-from chia.data_layer.dl_wallet_store import DataLayerStore
-from chia.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
-from chia.pools.pool_wallet import PoolWallet
-from chia.protocols import wallet_protocol
-from chia.protocols.wallet_protocol import CoinState
-from chia.server.outbound_message import NodeType
-from chia.server.server import ChiaServer
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.full_block import FullBlock
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.db_synchronous import db_synchronous_on
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.errors import Err
-from chia.util.ints import uint8, uint32, uint64, uint128
-from chia.util.lru_cache import LRUCache
-from chia.util.path import path_from_root
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_utils import construct_cat_puzzle, match_cat_puzzle
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.db_wallet.db_wallet_puzzles import MIRROR_PUZZLE_HASH
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.derive_keys import (
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.consensus.coinbase import farmer_parent_id, pool_parent_id
+from tree.consensus.constants import ConsensusConstants
+from tree.data_layer.data_layer_wallet import DataLayerWallet
+from tree.data_layer.dl_wallet_store import DataLayerStore
+from tree.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
+from tree.pools.pool_wallet import PoolWallet
+from tree.protocols import wallet_protocol
+from tree.protocols.wallet_protocol import CoinState
+from tree.server.outbound_message import NodeType
+from tree.server.server import TreeServer
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.blockchain_format.coin import Coin
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.coin_record import CoinRecord
+from tree.types.coin_spend import CoinSpend
+from tree.types.full_block import FullBlock
+from tree.types.mempool_inclusion_status import MempoolInclusionStatus
+from tree.util.bech32m import encode_puzzle_hash
+from tree.util.db_synchronous import db_synchronous_on
+from tree.util.db_wrapper import DBWrapper2
+from tree.util.errors import Err
+from tree.util.ints import uint8, uint32, uint64, uint128
+from tree.util.lru_cache import LRUCache
+from tree.util.path import path_from_root
+from tree.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from tree.wallet.cat_wallet.cat_utils import construct_cat_puzzle, match_cat_puzzle
+from tree.wallet.cat_wallet.cat_wallet import CATWallet
+from tree.wallet.db_wallet.db_wallet_puzzles import MIRROR_PUZZLE_HASH
+from tree.wallet.derivation_record import DerivationRecord
+from tree.wallet.derive_keys import (
     _derive_path,
     _derive_path_unhardened,
     master_sk_to_wallet_sk,
@@ -52,40 +52,40 @@ from chia.wallet.derive_keys import (
     master_sk_to_wallet_sk_unhardened,
     master_sk_to_wallet_sk_unhardened_intermediate,
 )
-from chia.wallet.did_wallet.did_info import DIDInfo
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.did_wallet.did_wallet_puzzles import DID_INNERPUZ_MOD, create_fullpuz, match_did_puzzle
-from chia.wallet.key_val_store import KeyValStore
-from chia.wallet.nft_wallet.nft_info import NFTWalletInfo
-from chia.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs, get_new_owner_did
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.nft_wallet.uncurry_nft import UncurriedNFT
-from chia.wallet.notification_manager import NotificationManager
-from chia.wallet.outer_puzzles import AssetType
-from chia.wallet.puzzle_drivers import PuzzleInfo
-from chia.wallet.puzzles.cat_loader import CAT_MOD, CAT_MOD_HASH
-from chia.wallet.settings.user_settings import UserSettings
-from chia.wallet.trade_manager import TradeManager
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
-from chia.wallet.util.address_type import AddressType
-from chia.wallet.util.compute_hints import compute_coin_hints
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_sync_utils import PeerRequestException, last_change_height_cs
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_blockchain import WalletBlockchain
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_coin_store import WalletCoinStore
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.wallet_interested_store import WalletInterestedStore
-from chia.wallet.wallet_nft_store import WalletNftStore
-from chia.wallet.wallet_pool_store import WalletPoolStore
-from chia.wallet.wallet_protocol import WalletProtocol
-from chia.wallet.wallet_puzzle_store import WalletPuzzleStore
-from chia.wallet.wallet_retry_store import WalletRetryStore
-from chia.wallet.wallet_transaction_store import WalletTransactionStore
-from chia.wallet.wallet_user_store import WalletUserStore
+from tree.wallet.did_wallet.did_info import DIDInfo
+from tree.wallet.did_wallet.did_wallet import DIDWallet
+from tree.wallet.did_wallet.did_wallet_puzzles import DID_INNERPUZ_MOD, create_fullpuz, match_did_puzzle
+from tree.wallet.key_val_store import KeyValStore
+from tree.wallet.nft_wallet.nft_info import NFTWalletInfo
+from tree.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs, get_new_owner_did
+from tree.wallet.nft_wallet.nft_wallet import NFTWallet
+from tree.wallet.nft_wallet.uncurry_nft import UncurriedNFT
+from tree.wallet.notification_manager import NotificationManager
+from tree.wallet.outer_puzzles import AssetType
+from tree.wallet.puzzle_drivers import PuzzleInfo
+from tree.wallet.puzzles.cat_loader import CAT_MOD, CAT_MOD_HASH
+from tree.wallet.settings.user_settings import UserSettings
+from tree.wallet.trade_manager import TradeManager
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.uncurried_puzzle import uncurry_puzzle
+from tree.wallet.util.address_type import AddressType
+from tree.wallet.util.compute_hints import compute_coin_hints
+from tree.wallet.util.transaction_type import TransactionType
+from tree.wallet.util.wallet_sync_utils import PeerRequestException, last_change_height_cs
+from tree.wallet.util.wallet_types import WalletType
+from tree.wallet.wallet import Wallet
+from tree.wallet.wallet_blockchain import WalletBlockchain
+from tree.wallet.wallet_coin_record import WalletCoinRecord
+from tree.wallet.wallet_coin_store import WalletCoinStore
+from tree.wallet.wallet_info import WalletInfo
+from tree.wallet.wallet_interested_store import WalletInterestedStore
+from tree.wallet.wallet_nft_store import WalletNftStore
+from tree.wallet.wallet_pool_store import WalletPoolStore
+from tree.wallet.wallet_protocol import WalletProtocol
+from tree.wallet.wallet_puzzle_store import WalletPuzzleStore
+from tree.wallet.wallet_retry_store import WalletRetryStore
+from tree.wallet.wallet_transaction_store import WalletTransactionStore
+from tree.wallet.wallet_user_store import WalletUserStore
 
 
 class WalletStateManager:
@@ -128,7 +128,7 @@ class WalletStateManager:
     interested_store: WalletInterestedStore
     retry_store: WalletRetryStore
     multiprocessing_context: multiprocessing.context.BaseContext
-    server: ChiaServer
+    server: TreeServer
     root_path: Path
     wallet_node: Any
     pool_store: WalletPoolStore
@@ -143,7 +143,7 @@ class WalletStateManager:
         config: Dict,
         db_path: Path,
         constants: ConsensusConstants,
-        server: ChiaServer,
+        server: TreeServer,
         root_path: Path,
         wallet_node,
         name: str = None,
@@ -604,7 +604,7 @@ class WalletStateManager:
         return removals
 
     async def determine_coin_type(
-        self, peer: WSChiaConnection, coin_state: CoinState, fork_height: Optional[uint32]
+        self, peer: WSTreeConnection, coin_state: CoinState, fork_height: Optional[uint32]
     ) -> Tuple[Optional[uint32], Optional[WalletType]]:
         if coin_state.created_height is not None and (
             self.is_pool_reward(uint32(coin_state.created_height), coin_state.coin)
@@ -748,7 +748,7 @@ class WalletStateManager:
         parent_coin_state: CoinState,
         coin_state: CoinState,
         coin_spend: CoinSpend,
-        peer: WSChiaConnection,
+        peer: WSTreeConnection,
     ) -> Tuple[Optional[uint32], Optional[WalletType]]:
         """
         Handle the new coin when it is a DID
@@ -835,7 +835,7 @@ class WalletStateManager:
             self.state_changed("wallet_created", wallet_id, {"did_id": did_wallet.get_my_DID()})
         return wallet_id, wallet_type
 
-    async def get_minter_did(self, launcher_coin: Coin, peer: WSChiaConnection) -> Optional[bytes32]:
+    async def get_minter_did(self, launcher_coin: Coin, peer: WSTreeConnection) -> Optional[bytes32]:
         # Get minter DID
         eve_coin = (await self.wallet_node.fetch_children(launcher_coin.name(), peer=peer))[0]
         eve_coin_spend: CoinSpend = await self.wallet_node.fetch_puzzle_solution(
@@ -966,7 +966,7 @@ class WalletStateManager:
     async def new_coin_state(
         self,
         coin_states: List[CoinState],
-        peer: WSChiaConnection,
+        peer: WSTreeConnection,
         fork_height: Optional[uint32],
     ) -> None:
         # TODO: add comment about what this method does
@@ -1412,7 +1412,7 @@ class WalletStateManager:
         all_unconfirmed_transaction_records: List[TransactionRecord],
         wallet_id: uint32,
         wallet_type: WalletType,
-        peer: WSChiaConnection,
+        peer: WSTreeConnection,
         coin_name: bytes32,
     ) -> None:
         """

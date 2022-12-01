@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.header_block import HeaderBlock
-from chia.util.streamable import Streamable, streamable
+from tree.types.blockchain_format.coin import Coin
+from tree.types.header_block import HeaderBlock
+from tree.util.streamable import Streamable, streamable
 
 
 @streamable

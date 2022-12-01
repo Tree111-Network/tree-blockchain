@@ -7,8 +7,8 @@ hash along with its solution.
 
 from __future__ import annotations
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
 
 from .load_clvm import load_clvm_maybe_recompile
 

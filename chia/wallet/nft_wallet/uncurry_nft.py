@@ -4,10 +4,10 @@ import logging
 from dataclasses import dataclass
 from typing import Optional, Type, TypeVar
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint16
-from chia.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
+from tree.types.blockchain_format.program import Program
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint16
+from tree.wallet.puzzles.load_clvm import load_clvm_maybe_recompile
 
 log = logging.getLogger(__name__)
 SINGLETON_TOP_LAYER_MOD = load_clvm_maybe_recompile("singleton_top_layer_v1_1.clvm")

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from chia.types.blockchain_format.program import SerializedProgram
+from tree.types.blockchain_format.program import SerializedProgram
 
 from .load_clvm import load_serialized_clvm_maybe_recompile
 

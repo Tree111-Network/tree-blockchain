@@ -5,8 +5,8 @@ from typing import List
 
 from typing_extensions import TypedDict
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint64
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint64
 
 
 class WalletType(IntEnum):

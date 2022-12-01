@@ -13,7 +13,7 @@ from bitstring import BitArray  # pyright: reportMissingImports=false
 from blspy import AugSchemeMPL, G1Element, PrivateKey  # pyright: reportMissingImports=false
 from typing_extensions import final
 
-from chia.util.errors import (
+from tree.util.errors import (
     KeychainException,
     KeychainFingerprintExists,
     KeychainFingerprintNotFound,
@@ -22,14 +22,14 @@ from chia.util.errors import (
     KeychainSecretsMissing,
     KeychainUserNotFound,
 )
-from chia.util.hash import std_hash
-from chia.util.ints import uint32
-from chia.util.keyring_wrapper import KeyringWrapper
-from chia.util.streamable import Streamable, streamable
+from tree.util.hash import std_hash
+from tree.util.ints import uint32
+from tree.util.keyring_wrapper import KeyringWrapper
+from tree.util.streamable import Streamable, streamable
 
 CURRENT_KEY_VERSION = "1.8"
-DEFAULT_USER = f"user-chia-{CURRENT_KEY_VERSION}"  # e.g. user-chia-1.8
-DEFAULT_SERVICE = f"chia-{DEFAULT_USER}"  # e.g. chia-user-chia-1.8
+DEFAULT_USER = f"user-tree-{CURRENT_KEY_VERSION}"  # e.g. user-tree-1.8
+DEFAULT_SERVICE = f"tree-{DEFAULT_USER}"  # e.g. tree-user-tree-1.8
 MAX_KEYS = 100
 MIN_PASSPHRASE_LEN = 8
 

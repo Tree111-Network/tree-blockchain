@@ -11,19 +11,19 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import dns.asyncresolver
 
-from chia.protocols.full_node_protocol import RequestPeers, RespondPeers
-from chia.protocols.introducer_protocol import RequestPeersIntroducer, RespondPeersIntroducer
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.server.address_manager import AddressManager, ExtendedPeerInfo
-from chia.server.address_manager_sqlite_store import create_address_manager_from_db
-from chia.server.address_manager_store import AddressManagerStore
-from chia.server.outbound_message import Message, NodeType, make_msg
-from chia.server.peer_store_resolver import PeerStoreResolver
-from chia.server.server import ChiaServer
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.peer_info import PeerInfo, TimestampedPeerInfo
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint64
+from tree.protocols.full_node_protocol import RequestPeers, RespondPeers
+from tree.protocols.introducer_protocol import RequestPeersIntroducer, RespondPeersIntroducer
+from tree.protocols.protocol_message_types import ProtocolMessageTypes
+from tree.server.address_manager import AddressManager, ExtendedPeerInfo
+from tree.server.address_manager_sqlite_store import create_address_manager_from_db
+from tree.server.address_manager_store import AddressManagerStore
+from tree.server.outbound_message import Message, NodeType, make_msg
+from tree.server.peer_store_resolver import PeerStoreResolver
+from tree.server.server import TreeServer
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.peer_info import PeerInfo, TimestampedPeerInfo
+from tree.util.hash import std_hash
+from tree.util.ints import uint16, uint64
 
 MAX_PEERS_RECEIVED_PER_REQUEST = 1000
 MAX_TOTAL_PEERS_RECEIVED = 3000
@@ -41,7 +41,7 @@ class FullNodeDiscovery:
 
     def __init__(
         self,
-        server: ChiaServer,
+        server: TreeServer,
         target_outbound_count: int,
         peer_store_resolver: PeerStoreResolver,
         introducer_info: Optional[Dict[str, Any]],
@@ -51,7 +51,7 @@ class FullNodeDiscovery:
         default_port: Optional[int],
         log: Logger,
     ) -> None:
-        self.server: ChiaServer = server
+        self.server: TreeServer = server
         self.is_closed = False
         self.target_outbound_count = target_outbound_count
         self.legacy_peer_db_path = peer_store_resolver.legacy_peer_db_path
@@ -138,7 +138,7 @@ class FullNodeDiscovery:
             except Exception as e:
                 self.log.error(f"Error while canceling task.{e} {task}")
 
-    async def on_connect(self, peer: WSChiaConnection) -> None:
+    async def on_connect(self, peer: WSTreeConnection) -> None:
         if (
             peer.is_outbound is False
             and peer.peer_server_port is not None
@@ -165,7 +165,7 @@ class FullNodeDiscovery:
             await peer.send_message(msg)
 
     # Updates timestamps each time we receive a message for outbound connections.
-    async def update_peer_timestamp_on_message(self, peer: WSChiaConnection) -> None:
+    async def update_peer_timestamp_on_message(self, peer: WSTreeConnection) -> None:
         if (
             peer.is_outbound
             and peer.peer_server_port is not None
@@ -203,7 +203,7 @@ class FullNodeDiscovery:
         if self.introducer_info is None:
             return None
 
-        async def on_connect(peer: WSChiaConnection) -> None:
+        async def on_connect(peer: WSTreeConnection) -> None:
             msg = make_msg(ProtocolMessageTypes.request_peers_introducer, RequestPeersIntroducer())
             await peer.send_message(msg)
 
@@ -236,7 +236,7 @@ class FullNodeDiscovery:
         except Exception as e:
             self.log.warning(f"querying DNS introducer failed: {e}")
 
-    async def on_connect_callback(self, peer: WSChiaConnection) -> None:
+    async def on_connect_callback(self, peer: WSTreeConnection) -> None:
         if self.server.on_connect is not None:
             await self.server.on_connect(peer)
         else:
@@ -514,7 +514,7 @@ class FullNodePeers(FullNodeDiscovery):
 
     def __init__(
         self,
-        server: ChiaServer,
+        server: TreeServer,
         target_outbound_count: int,
         peer_store_resolver: PeerStoreResolver,
         introducer_info: Dict[str, Any],
@@ -694,7 +694,7 @@ class FullNodePeers(FullNodeDiscovery):
 class WalletPeers(FullNodeDiscovery):
     def __init__(
         self,
-        server: ChiaServer,
+        server: TreeServer,
         target_outbound_count: int,
         peer_store_resolver: PeerStoreResolver,
         introducer_info: Dict[str, Any],

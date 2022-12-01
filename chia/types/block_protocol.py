@@ -4,9 +4,9 @@ from typing import List, Optional
 
 from typing_extensions import Protocol
 
-from chia.types.blockchain_format.program import SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32
+from tree.types.blockchain_format.program import SerializedProgram
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint32
 
 
 class BlockInfo(Protocol):

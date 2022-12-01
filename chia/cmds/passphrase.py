@@ -7,7 +7,7 @@ from typing import Optional
 
 import click
 
-from chia.util.config import load_config
+from tree.util.config import load_config
 
 
 @click.group("passphrase", short_help="Manage your keyring passphrase")

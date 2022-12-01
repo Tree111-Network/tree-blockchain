@@ -10,27 +10,27 @@ import pytest
 import pytest_asyncio
 from blspy import G1Element
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH
-from chia.pools.pool_wallet_info import PoolSingletonState, PoolWalletInfo
-from chia.protocols import full_node_protocol
-from chia.protocols.full_node_protocol import RespondBlock
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.config import load_config
-from chia.util.ints import uint16, uint32
-from chia.wallet.derive_keys import find_authentication_sk, find_owner_sk
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.wallet_types import WalletType
-from chia.simulator.block_tools import BlockTools, get_plot_dir
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.full_node.full_node_api import FullNodeAPI
+from tree.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH
+from tree.pools.pool_wallet_info import PoolSingletonState, PoolWalletInfo
+from tree.protocols import full_node_protocol
+from tree.protocols.full_node_protocol import RespondBlock
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.peer_info import PeerInfo
+from tree.util.bech32m import encode_puzzle_hash
+from tree.util.byte_types import hexstr_to_bytes
+from tree.util.config import load_config
+from tree.util.ints import uint16, uint32
+from tree.wallet.derive_keys import find_authentication_sk, find_owner_sk
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.util.wallet_types import WalletType
+from tree.simulator.block_tools import BlockTools, get_plot_dir
 from tests.util.wallet_is_synced import wallet_is_synced
-from chia.simulator.setup_nodes import setup_simulators_and_wallets_service
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from tree.simulator.setup_nodes import setup_simulators_and_wallets_service
+from tree.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
 
 # TODO: Compare deducted fees in all tests against reported total_fee
 
@@ -949,10 +949,10 @@ class TestPoolWalletRpc:
 
             await farm_blocks(full_node_api, our_ph, 3)
 
-            async def have_chia():
+            async def have_tree():
                 return (await wallets[0].get_confirmed_balance()) > FEE_AMOUNT
 
-            await time_out_assert(timeout=MAX_WAIT_SECS, function=have_chia)
+            await time_out_assert(timeout=MAX_WAIT_SECS, function=have_tree)
             await time_out_assert(20, wallet_is_synced, True, wallet_nodes[0], full_node_api)
 
             creation_tx: TransactionRecord = await client.create_new_pool_wallet(
@@ -1086,10 +1086,10 @@ class TestPoolWalletRpc:
 
             await farm_blocks(full_node_api, our_ph, 3)
 
-            async def have_chia():
+            async def have_tree():
                 return (await wallets[0].get_confirmed_balance()) > FEE_AMOUNT
 
-            await time_out_assert(timeout=WAIT_SECS, function=have_chia)
+            await time_out_assert(timeout=WAIT_SECS, function=have_tree)
             await time_out_assert(20, wallet_is_synced, True, wallet_nodes[0], full_node_api)
 
             creation_tx: TransactionRecord = await client.create_new_pool_wallet(
@@ -1185,10 +1185,10 @@ class TestPoolWalletRpc:
 
             await farm_blocks(full_node_api, our_ph, 3)
 
-            async def have_chia():
+            async def have_tree():
                 return (await wallets[0].get_confirmed_balance()) > FEE_AMOUNT
 
-            await time_out_assert(timeout=WAIT_SECS, function=have_chia)
+            await time_out_assert(timeout=WAIT_SECS, function=have_tree)
             await time_out_assert(20, wallet_is_synced, True, wallet_nodes[0], full_node_api)
 
             creation_tx: TransactionRecord = await client.create_new_pool_wallet(

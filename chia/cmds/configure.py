@@ -5,7 +5,7 @@ from typing import Optional
 
 import click
 
-from chia.util.config import load_defaults_for_missing_services, lock_and_load_config, save_config, str2bool
+from tree.util.config import load_defaults_for_missing_services, lock_and_load_config, save_config, str2bool
 
 
 def configure(
@@ -101,9 +101,9 @@ def configure(
             if testnet == "true" or testnet == "t":
                 print("Setting Testnet")
                 testnet_port = "58444"
-                testnet_introducer = "introducer-testnet10.chia.net"
-                testnet_dns_introducer = "dns-introducer-testnet10.chia.net"
-                bootstrap_peers = ["testnet10-node.chia.net"]
+                testnet_introducer = "introducer-testnet10.tree111.com"
+                testnet_dns_introducer = "dns-introducer-testnet10.tree111.com"
+                bootstrap_peers = ["testnet10-node.tree111.com"]
                 testnet = "testnet10"
                 config["full_node"]["port"] = int(testnet_port)
                 if config["full_node"]["introducer_peer"] is None:
@@ -145,9 +145,9 @@ def configure(
             elif testnet == "false" or testnet == "f":
                 print("Setting Mainnet")
                 mainnet_port = "8444"
-                mainnet_introducer = "introducer.chia.net"
-                mainnet_dns_introducer = "dns-introducer.chia.net"
-                bootstrap_peers = ["node.chia.net"]
+                mainnet_introducer = "introducer.tree111.com"
+                mainnet_dns_introducer = "dns-introducer.tree111.com"
+                bootstrap_peers = ["node.tree111.com"]
                 net = "mainnet"
                 config["full_node"]["port"] = int(mainnet_port)
                 config["full_node"]["introducer_peer"]["port"] = int(mainnet_port)
@@ -203,7 +203,7 @@ def configure(
             change_made = True
 
         if change_made:
-            print("Restart any running chia services for changes to take effect")
+            print("Restart any running tree services for changes to take effect")
             save_config(root_path, "config.yaml", config)
 
 

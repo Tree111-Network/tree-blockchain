@@ -3,14 +3,14 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Dict, Set
 
-from chia.util.bech32m import bech32_decode, convertbits
-from chia.util.config import selected_network_address_prefix
+from tree.util.bech32m import bech32_decode, convertbits
+from tree.util.config import selected_network_address_prefix
 
 
 class AddressType(Enum):
     XCH = "xch"
     NFT = "nft"
-    DID = "did:chia:"
+    DID = "did:tree:"
 
     def hrp(self, config: Dict[str, Any]) -> str:
         if self == AddressType.XCH:

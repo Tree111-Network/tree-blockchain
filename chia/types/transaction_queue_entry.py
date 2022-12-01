@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.spend_bundle import SpendBundle
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.types.spend_bundle import SpendBundle
 
 
 @dataclass(frozen=True)
@@ -17,7 +17,7 @@ class TransactionQueueEntry:
     transaction: SpendBundle
     transaction_bytes: Optional[bytes]
     spend_name: bytes32
-    peer: Optional[WSChiaConnection]
+    peer: Optional[WSTreeConnection]
     test: bool
 
     def __lt__(self, other):

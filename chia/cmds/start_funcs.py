@@ -8,15 +8,15 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from chia.cmds.passphrase_funcs import get_current_passphrase
-from chia.daemon.client import DaemonProxy, connect_to_daemon_and_validate
-from chia.util.errors import KeychainMaxUnlockAttempts
-from chia.util.keychain import Keychain
-from chia.util.service_groups import services_for_groups
+from tree.cmds.passphrase_funcs import get_current_passphrase
+from tree.daemon.client import DaemonProxy, connect_to_daemon_and_validate
+from tree.util.errors import KeychainMaxUnlockAttempts
+from tree.util.keychain import Keychain
+from tree.util.service_groups import services_for_groups
 
 
 def launch_start_daemon(root_path: Path) -> subprocess.Popen:
-    os.environ["CHIA_ROOT"] = str(root_path)
+    os.environ["TREE_ROOT"] = str(root_path)
     creationflags = 0
     if sys.platform == "win32":
         creationflags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW
@@ -67,7 +67,7 @@ async def async_start(root_path: Path, config: Dict[str, Any], group: str, resta
         return None
 
     if daemon is None:
-        print("Failed to create the chia daemon")
+        print("Failed to create the tree daemon")
         return None
 
     for service in services_for_groups(group):

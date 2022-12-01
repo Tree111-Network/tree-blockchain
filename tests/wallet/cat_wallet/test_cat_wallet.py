@@ -5,19 +5,19 @@ from typing import List
 
 import pytest
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.blockchain_format.coin import Coin
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_info import LegacyCATInfo
-from chia.wallet.cat_wallet.cat_utils import construct_cat_puzzle
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.wallet_info import WalletInfo
+from tree.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
+from tree.simulator.time_out_assert import time_out_assert
+from tree.types.blockchain_format.coin import Coin
+from tree.types.peer_info import PeerInfo
+from tree.util.ints import uint16, uint32, uint64
+from tree.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from tree.wallet.cat_wallet.cat_info import LegacyCATInfo
+from tree.wallet.cat_wallet.cat_utils import construct_cat_puzzle
+from tree.wallet.cat_wallet.cat_wallet import CATWallet
+from tree.wallet.puzzles.cat_loader import CAT_MOD
+from tree.wallet.transaction_record import TransactionRecord
+from tree.wallet.wallet_info import WalletInfo
 from tests.util.wallet_is_synced import wallet_is_synced
 
 

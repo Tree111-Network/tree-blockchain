@@ -7,20 +7,20 @@ import pathlib
 import tracemalloc
 from datetime import datetime
 
-from chia.util.path import path_from_root
+from tree.util.path import path_from_root
 
 # to use the profiler, enable it config file, "enable_profiler"
-# the output will be printed to your chia root path, e.g. ~/.chia/mainnet/profile/
+# the output will be printed to your tree root path, e.g. ~/.tree/mainnet/profile/
 # to analyze the profile, run:
 
-#   python chia/utils/profiler.py ~/.chia/mainnet/profile | less -r
+#   python tree/utils/profiler.py ~/.tree/mainnet/profile | less -r
 
-# this will print CPU usage of the chia full node main thread at 1 second increments.
+# this will print CPU usage of the tree full node main thread at 1 second increments.
 # find a time window of interest and analyze the profile file (which are in pstats format).
 
 # for example:
 
-#   python chia/utils/profiler.py ~/.chia/mainnet/profile 10 20
+#   python tree/utils/profiler.py ~/.tree/mainnet/profile 10 20
 
 
 async def profile_task(root_path: pathlib.Path, service: str, log: logging.Logger) -> None:
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         for i in range(first, last + 1):
             files.append(str(profile_dir / ("slot-%05d.profile" % i)))
 
-        output_file = "chia-hotspot-%d" % first
+        output_file = "tree-hotspot-%d" % first
         if first < last:
             output_file += "-%d" % last
 

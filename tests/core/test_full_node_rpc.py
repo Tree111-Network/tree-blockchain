@@ -7,22 +7,22 @@ import pytest
 from blspy import AugSchemeMPL
 from clvm.casts import int_to_bytes
 
-from chia.consensus.pot_iterations import is_overflow_block
-from chia.full_node.signage_point import SignagePoint
-from chia.protocols import full_node_protocol
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.server.outbound_message import NodeType
-from chia.simulator.block_tools import get_signage_point, test_constants
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
-from chia.simulator.time_out_assert import time_out_assert
-from chia.simulator.wallet_tools import WalletTool
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.full_block import FullBlock
-from chia.types.spend_bundle import SpendBundle
-from chia.types.unfinished_block import UnfinishedBlock
-from chia.util.hash import std_hash
-from chia.util.ints import uint8
+from tree.consensus.pot_iterations import is_overflow_block
+from tree.full_node.signage_point import SignagePoint
+from tree.protocols import full_node_protocol
+from tree.rpc.full_node_rpc_client import FullNodeRpcClient
+from tree.server.outbound_message import NodeType
+from tree.simulator.block_tools import get_signage_point, test_constants
+from tree.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
+from tree.simulator.time_out_assert import time_out_assert
+from tree.simulator.wallet_tools import WalletTool
+from tree.types.condition_opcodes import ConditionOpcode
+from tree.types.condition_with_args import ConditionWithArgs
+from tree.types.full_block import FullBlock
+from tree.types.spend_bundle import SpendBundle
+from tree.types.unfinished_block import UnfinishedBlock
+from tree.util.hash import std_hash
+from tree.util.ints import uint8
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 from tests.connection_utils import connect_and_get_peer
 from tests.util.rpc import validate_get_routes

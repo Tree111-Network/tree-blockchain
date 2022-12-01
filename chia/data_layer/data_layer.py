@@ -10,8 +10,8 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional, Set, Tuple, U
 
 import aiohttp
 
-from chia.data_layer.data_layer_errors import KeyNotFoundError
-from chia.data_layer.data_layer_util import (
+from tree.data_layer.data_layer_errors import KeyNotFoundError
+from tree.data_layer.data_layer_util import (
     DiffData,
     InternalNode,
     KeyValue,
@@ -30,20 +30,20 @@ from chia.data_layer.data_layer_util import (
     TerminalNode,
     leaf_hash,
 )
-from chia.data_layer.data_layer_wallet import DataLayerWallet, Mirror, SingletonRecord, verify_offer
-from chia.data_layer.data_store import DataStore
-from chia.data_layer.download_data import insert_from_delta_file, write_files_for_root
-from chia.rpc.rpc_server import default_get_connections
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.server.outbound_message import NodeType
-from chia.server.server import ChiaServer
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32, uint64
-from chia.util.path import path_from_root
-from chia.wallet.trade_record import TradeRecord
-from chia.wallet.trading.offer import Offer as TradingOffer
-from chia.wallet.transaction_record import TransactionRecord
+from tree.data_layer.data_layer_wallet import DataLayerWallet, Mirror, SingletonRecord, verify_offer
+from tree.data_layer.data_store import DataStore
+from tree.data_layer.download_data import insert_from_delta_file, write_files_for_root
+from tree.rpc.rpc_server import default_get_connections
+from tree.rpc.wallet_rpc_client import WalletRpcClient
+from tree.server.outbound_message import NodeType
+from tree.server.server import TreeServer
+from tree.server.ws_connection import WSTreeConnection
+from tree.types.blockchain_format.sized_bytes import bytes32
+from tree.util.ints import uint32, uint64
+from tree.util.path import path_from_root
+from tree.wallet.trade_record import TradeRecord
+from tree.wallet.trading.offer import Offer as TradingOffer
+from tree.wallet.transaction_record import TransactionRecord
 
 
 class DataLayer:
@@ -57,10 +57,10 @@ class DataLayer:
     initialized: bool
     none_bytes: bytes32
     lock: asyncio.Lock
-    _server: Optional[ChiaServer]
+    _server: Optional[TreeServer]
 
     @property
-    def server(self) -> ChiaServer:
+    def server(self) -> TreeServer:
         # This is a stop gap until the class usage is refactored such the values of
         # integral attributes are known at creation of the instance.
         if self._server is None:
@@ -100,13 +100,13 @@ class DataLayer:
     def _set_state_changed_callback(self, callback: Callable[..., object]) -> None:
         self.state_changed_callback = callback
 
-    async def on_connect(self, connection: WSChiaConnection) -> None:
+    async def on_connect(self, connection: WSTreeConnection) -> None:
         pass
 
     def get_connections(self, request_node_type: Optional[NodeType]) -> List[Dict[str, Any]]:
         return default_get_connections(server=self.server, request_node_type=request_node_type)
 
-    def set_server(self, server: ChiaServer) -> None:
+    def set_server(self, server: TreeServer) -> None:
         self._server = server
 
     async def _start(self) -> None:
