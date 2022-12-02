@@ -82,8 +82,8 @@ def passes_plot_filter(
     challenge_hash: bytes32,
     signage_point: bytes32,
 ) -> bool:
-    plot_filter: BitArray = BitArray(calculate_plot_filter_input(plot_id, challenge_hash, signage_point))
-    return plot_filter[: constants.NUMBER_ZERO_BITS_PLOT_FILTER].uint == 0
+    # plot_filter: BitArray = BitArray(calculate_plot_filter_input(plot_id, challenge_hash, signage_point))
+    return True # plot_filter[: constants.NUMBER_ZERO_BITS_PLOT_FILTER].uint == 0
 
 
 def calculate_plot_filter_input(plot_id: bytes32, challenge_hash: bytes32, signage_point: bytes32) -> bytes32:
