@@ -4,10 +4,19 @@ min_mainnet_k_size: 32
 ping_interval: 120
 self_hostname: &self_hostname "localhost"
 prefer_ipv6: False
-daemon_port: 55400
+daemon_port: &daemon_port 20400
 daemon_max_message_size: 50000000 # maximum size of RPC message in bytes
 inbound_rate_limit_percent: 100
 outbound_rate_limit_percent: 30
+default_full_node_port: &default_full_node_port 20444
+default_testnet_full_node_port: &default_testnet_full_node_port 20544
+default_introducer_port: &default_introducer_port 20445
+default_timelord_port: &default_timelord_port 20446
+default_farmer_port: &default_farmer_port 20447
+default_harvester_port: &default_harvester_port 20448
+default_wallet_port: &default_wallet_port 20449
+default_vdf_server_port: &default_vdf_server_port 20800
+default_full_node_rpc_port: &default_full_node_rpc_port 20555
 
 network_overrides: &network_overrides
   constants:
@@ -73,10 +82,10 @@ network_overrides: &network_overrides
   config:
     mainnet:
       address_prefix: "tree111"
-      default_full_node_port: 8444
+      default_full_node_port: *default_full_node_port
     testnet0:
       address_prefix: "ttree111"
-      default_full_node_port: 58444
+      default_full_node_port: *default_testnet_full_node_port
     testnet1:
       address_prefix: "ttree111"
     testnet2:
@@ -87,10 +96,10 @@ network_overrides: &network_overrides
       address_prefix: "ttree111"
     testnet7:
       address_prefix: "ttree111"
-      default_full_node_port: 58444
+      default_full_node_port: *default_testnet_full_node_port
     testnet10:
       address_prefix: "ttree111"
-      default_full_node_port: 58444
+      default_full_node_port: *default_testnet_full_node_port
 
 selected_network: &selected_network "mainnet"
 ALERTS_URL: https://download.tree111.com/notify/mainnet_alert.txt
@@ -106,29 +115,27 @@ tree_ssl_ca:
   crt: "config/ssl/ca/tree_ca.crt"
   key: "config/ssl/ca/tree_ca.key"
 
-
 daemon_ssl:
   private_crt: "config/ssl/daemon/private_daemon.crt"
   private_key: "config/ssl/daemon/private_daemon.key"
 
-
 # Controls logging of all servers (harvester, farmer, etc..). Each one can be overridden.
 logging: &logging
-  log_stdout: False  # If True, outputs to stdout instead of a file
+  log_stdout: False # If True, outputs to stdout instead of a file
   log_filename: "log/debug.log"
-  log_level: "WARNING"  # Can be CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
+  log_level: "INFO" # Can be CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET
   log_maxfilesrotation: 7 #  Max files in rotation. Default value 7 if the key is not set
   log_maxbytesrotation: 52428800 #  Max bytes logged before rotating logs
   log_use_gzip: False #  Use gzip to compress rotated logs
-  log_syslog: False  # If True, outputs to SysLog host and port specified
-  log_syslog_host: "localhost"  # Send logging messages to a remote or local Unix syslog
-  log_syslog_port: 514  # UDP port of the remote or local Unix syslog
+  log_syslog: False # If True, outputs to SysLog host and port specified
+  log_syslog_host: "localhost" # Send logging messages to a remote or local Unix syslog
+  log_syslog_port: 514 # UDP port of the remote or local Unix syslog
 
 seeder:
   # The fake full node used for crawling will run on this port.
-  port: 8444
+  port: *default_full_node_port
   # Most full nodes on the network run on this port. (i.e. 8444 for mainnet, 58444 for testnet).
-  other_peers_port: 8444
+  other_peers_port: *default_full_node_port
   # This will override the default full_node.peer_connect_timeout for the crawler full node
   peer_connect_timeout: 2
   # Path to crawler DB. Defaults to $TREE_ROOT/crawler.db
@@ -137,7 +144,7 @@ seeder:
   bootstrap_peers:
     - "node.tree111.com"
   # Only consider nodes synced at least to this height.
-  minimum_height: 240000
+  minimum_height: 4096
   # How many of a particular version we need to see before reporting it in the logs
   minimum_version_count: 100
   domain_name: "seeder.example.com."
@@ -156,28 +163,27 @@ seeder:
   # Crawler is its own standalone service within the seeder component
   crawler:
     start_rpc_server: True
-    rpc_port: 8561
+    rpc_port: 20561
     ssl:
       private_crt: "config/ssl/crawler/private_crawler.crt"
       private_key: "config/ssl/crawler/private_crawler.key"
 
 harvester:
   # The harvester server (if run) will run on this port
-  port: 8448
+  port: *default_harvester_port
   farmer_peer:
     host: *self_hostname
-    port: 8447
+    port: *default_farmer_port
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8560
+  rpc_port: 20560
   num_threads: 30
   plots_refresh_parameter:
     interval_seconds: 120 # The interval in seconds to refresh the plot file manager
     retry_invalid_seconds: 1200 # How long to wait before re-trying plots which failed to load
     batch_size: 300 # How many plot files the harvester processes before it waits batch_sleep_milliseconds
     batch_sleep_milliseconds: 1 # Milliseconds the harvester sleeps between batch processing
-
 
   # If True use parallel reads in chiapos
   parallel_read: True
@@ -191,8 +197,8 @@ harvester:
   recursive_plot_scan: False # If True the harvester scans plots recursively in the provided directories.
 
   ssl:
-    private_crt:  "config/ssl/harvester/private_harvester.crt"
-    private_key:  "config/ssl/harvester/private_harvester.key"
+    private_crt: "config/ssl/harvester/private_harvester.crt"
+    private_key: "config/ssl/harvester/private_harvester.key"
 
   private_ssl_ca:
     crt: "config/ssl/ca/private_ca.crt"
@@ -209,17 +215,16 @@ pool:
   network_overrides: *network_overrides
   selected_network: *selected_network
 
-
 farmer:
   # The farmer server (if run) will run on this port
-  port: 8447
+  port: *default_farmer_port
   # The farmer will attempt to connect to this full node and harvester
   full_node_peer:
     host: *self_hostname
-    port: 8444
+    port: *default_full_node_port
   harvester_peer:
     host: *self_hostname
-    port: 8448
+    port: *default_harvester_port
 
   pool_public_keys: []
 
@@ -228,7 +233,7 @@ farmer:
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8559
+  rpc_port: 20559
 
   # To send a share to a pool, a proof of space must have required_iters less than this number
   pool_share_threshold: 1000
@@ -237,24 +242,23 @@ farmer:
   selected_network: *selected_network
 
   ssl:
-    private_crt:  "config/ssl/farmer/private_farmer.crt"
-    private_key:  "config/ssl/farmer/private_farmer.key"
-    public_crt:  "config/ssl/farmer/public_farmer.crt"
-    public_key:  "config/ssl/farmer/public_farmer.key"
+    private_crt: "config/ssl/farmer/private_farmer.crt"
+    private_key: "config/ssl/farmer/private_farmer.key"
+    public_crt: "config/ssl/farmer/public_farmer.crt"
+    public_key: "config/ssl/farmer/public_farmer.key"
 
 # Don't run this unless you want to run VDF clients on the local machine.
 timelord_launcher:
   # The server where the VDF clients will connect to.
   host: *self_hostname
-  port: 8000
+  port: *default_vdf_server_port
   # Number of VDF client processes to keep alive in the local machine.
   process_count: 3
   logging: *logging
 
-
 timelord:
   # The timelord server (if run) will run on this port
-  port: 8446
+  port: *default_timelord_port
   # Provides a list of VDF clients expected to connect to this timelord.
   # For each client, an IP is provided, together with the estimated iterations per second.
   vdf_clients:
@@ -265,14 +269,14 @@ timelord:
     ips_estimate:
       - 150000
   full_node_peer:
-      host: *self_hostname
-      port: 8444
+    host: *self_hostname
+    port: *default_full_node_port
   # Maximum number of seconds allowed for a client to reconnect to the server.
   max_connection_time: 60
   # The ip and port where the TCP clients will connect.
   vdf_server:
     host: *self_hostname
-    port: 8000
+    port: *default_vdf_server_port
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
@@ -302,17 +306,17 @@ timelord:
   multiprocessing_start_method: default
 
   start_rpc_server: True
-  rpc_port: 8557
+  rpc_port: 20557
 
   ssl:
-    private_crt:  "config/ssl/timelord/private_timelord.crt"
-    private_key:  "config/ssl/timelord/private_timelord.key"
-    public_crt:  "config/ssl/timelord/public_timelord.crt"
-    public_key:  "config/ssl/timelord/public_timelord.key"
+    private_crt: "config/ssl/timelord/private_timelord.crt"
+    private_key: "config/ssl/timelord/private_timelord.key"
+    public_crt: "config/ssl/timelord/public_timelord.crt"
+    public_key: "config/ssl/timelord/public_timelord.key"
 
 full_node:
   # The full node server (if run) will run on this port
-  port: 8444
+  port: *default_full_node_port
 
   # controls the sync-to-disk behavior of the database connection. Can be one of:
   # "on"    enables syncing to disk, minimizes risk of corrupting the DB in
@@ -341,7 +345,7 @@ full_node:
 
   # If True, starts an RPC server at the following port
   start_rpc_server: True
-  rpc_port: 8555
+  rpc_port: *default_full_node_rpc_port
 
   # Use UPnP to attempt to allow other full nodes to reach your node behind a gateway
   enable_upnp: True
@@ -408,33 +412,33 @@ full_node:
   dns_servers:
     - "dns-introducer.tree111.com"
   farmer_peer:
-      host: *self_hostname
-      port: 8447
+    host: *self_hostname
+    port: *default_farmer_port
   timelord_peer:
-      host: *self_hostname
-      port: 8446
+    host: *self_hostname
+    port: *default_timelord_port
   introducer_peer:
-      host: introducer.tree111.com  # Tree AWS introducer IPv4/IPv6
-      port: 8444
+    host: introducer.tree111.com # Tree AWS introducer IPv4/IPv6
+    port: *default_introducer_port
   wallet_peer:
     host: *self_hostname
-    port: 8449
+    port: *default_wallet_port
   logging: *logging
   network_overrides: *network_overrides
   selected_network: *selected_network
 
   ssl:
-    private_crt:  "config/ssl/full_node/private_full_node.crt"
-    private_key:  "config/ssl/full_node/private_full_node.key"
-    public_crt:  "config/ssl/full_node/public_full_node.crt"
-    public_key:  "config/ssl/full_node/public_full_node.key"
+    private_crt: "config/ssl/full_node/private_full_node.crt"
+    private_key: "config/ssl/full_node/private_full_node.key"
+    public_crt: "config/ssl/full_node/public_full_node.crt"
+    public_key: "config/ssl/full_node/public_full_node.key"
 
 ui:
-   # The ui node server (if run) will run on this port
-  port: 8222
+  # The ui node server (if run) will run on this port
+  port: 20222
 
   # Which port to use to communicate with the full node
-  rpc_port: 8555
+  rpc_port: *default_full_node_rpc_port
 
   # This SSH key is for the ui SSH server
   ssh_filename: config/ssh_host_key
@@ -445,14 +449,14 @@ ui:
   # this is where the electron UI will find its daemon
   # defaults to the one running locally with its private keys
   daemon_host: *self_hostname
-  daemon_port: 55400
+  daemon_port: *daemon_port
   daemon_ssl:
     private_crt: config/ssl/daemon/private_daemon.crt
     private_key: config/ssl/daemon/private_daemon.key
 
 introducer:
   host: *self_hostname
-  port: 8445
+  port: *default_introducer_port
   max_peers_to_send: 20
   # The introducer will only return peers it has seen in the last
   # recent_peer_threshold seconds
@@ -462,12 +466,12 @@ introducer:
   selected_network: *selected_network
 
   ssl:
-    public_crt:  "config/ssl/full_node/public_full_node.crt"
-    public_key:  "config/ssl/full_node/public_full_node.key"
+    public_crt: "config/ssl/full_node/public_full_node.crt"
+    public_key: "config/ssl/full_node/public_full_node.key"
 
 wallet:
-  port: 8449
-  rpc_port: 9256
+  port: *default_wallet_port
+  rpc_port: 20256
 
   enable_profiler: False
 
@@ -490,7 +494,7 @@ wallet:
 
   full_node_peer:
     host: *self_hostname
-    port: 8444
+    port: *default_full_node_port
   # The path of NFT off-chain metadata cache
   nft_metadata_cache_path: "nft_cache"
   # The length of NFT ID prefix will be used as hash index
@@ -520,13 +524,13 @@ wallet:
 
   introducer_peer:
     host: introducer.tree111.com # Tree AWS introducer IPv4/IPv6
-    port: 8444
+    port: *default_introducer_port
 
   ssl:
-    private_crt:  "config/ssl/wallet/private_wallet.crt"
-    private_key:  "config/ssl/wallet/private_wallet.key"
-    public_crt:  "config/ssl/wallet/public_wallet.crt"
-    public_key:  "config/ssl/wallet/public_wallet.key"
+    private_crt: "config/ssl/wallet/private_wallet.crt"
+    private_key: "config/ssl/wallet/private_wallet.key"
+    public_crt: "config/ssl/wallet/public_wallet.crt"
+    public_key: "config/ssl/wallet/public_wallet.key"
 
   # Node IDs of trusted full node peers, for performing a fast trusted wallet sync
   trusted_peers:
@@ -589,13 +593,12 @@ data_layer:
   # TODO: which of these are really appropriate?
 
   ssl:
-    private_crt:  "config/ssl/data_layer/private_data_layer.crt"
-    private_key:  "config/ssl/data_layer/private_data_layer.key"
-    public_crt:  "config/ssl/data_layer/public_data_layer.crt"
-    public_key:  "config/ssl/data_layer/public_data_layer.key"
+    private_crt: "config/ssl/data_layer/private_data_layer.crt"
+    private_key: "config/ssl/data_layer/private_data_layer.key"
+    public_crt: "config/ssl/data_layer/public_data_layer.crt"
+    public_key: "config/ssl/data_layer/public_data_layer.key"
 
 simulator:
-
   # Should the simulator farm a block whenever a transaction is in mempool
   auto_farm: True
 
