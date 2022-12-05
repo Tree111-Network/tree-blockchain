@@ -67,7 +67,7 @@ proof_of_space = ProofOfSpace(
 )
 
 pool_target = PoolTarget(
-    bytes32.from_hexstr("d23da14695a188ae5708dd152263c4db883eb27edeb936178d4d988b8f3ce5fc"),
+    bytes32.from_hexstr("206d4bd708650bbcb468207dffca1b969a9ee733acc86200ada2f415119292f7"),
     uint32(421941852),
 )
 g2_element = G2Element(
