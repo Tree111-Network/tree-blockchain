@@ -211,6 +211,9 @@ async def send(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> 
     if amount == 0:
         print("You can not send an empty transaction")
         return
+    if fee < 0.05:
+        print("Minimum fee is 0.05")
+        return
 
     try:
         typ = await get_wallet_type(wallet_id=wallet_id, wallet_client=wallet_client)

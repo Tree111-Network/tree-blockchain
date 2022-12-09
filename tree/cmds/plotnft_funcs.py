@@ -57,7 +57,7 @@ async def create_pool_args(pool_url: str) -> Dict:
 async def create(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
     state = args["state"]
     prompt = not args.get("yes", False)
-    fee = Decimal(args.get("fee", 0))
+    fee = Decimal(args.get("fee", 0.05))
     fee_mojos = uint64(int(fee * units["tree"]))
     target_puzzle_hash: Optional[bytes32]
     # Could use initial_pool_state_from_dict to simplify
@@ -265,7 +265,7 @@ async def join_pool(args: dict, wallet_client: WalletRpcClient, fingerprint: int
     config = load_config(DEFAULT_ROOT_PATH, "config.yaml")
     enforce_https = config["full_node"]["selected_network"] == "mainnet"
     pool_url: str = args["pool_url"]
-    fee = Decimal(args.get("fee", 0))
+    fee = Decimal(args.get("fee", 0.05))
     fee_mojos = uint64(int(fee * units["tree"]))
 
     if enforce_https and not pool_url.startswith("https://"):
@@ -309,7 +309,7 @@ async def join_pool(args: dict, wallet_client: WalletRpcClient, fingerprint: int
 async def self_pool(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
     wallet_id = args.get("id", None)
     prompt = not args.get("yes", False)
-    fee = Decimal(args.get("fee", 0))
+    fee = Decimal(args.get("fee", 0.05))
     fee_mojos = uint64(int(fee * units["tree"]))
 
     msg = f"Will start self-farming with Plot NFT on wallet id {wallet_id} fingerprint {fingerprint}."
@@ -332,7 +332,7 @@ async def inspect_cmd(args: dict, wallet_client: WalletRpcClient, fingerprint: i
 
 async def claim_cmd(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
     wallet_id = args.get("id", None)
-    fee = Decimal(args.get("fee", 0))
+    fee = Decimal(args.get("fee", 0.05))
     fee_mojos = uint64(int(fee * units["tree"]))
     msg = f"\nWill claim rewards for wallet ID: {wallet_id}."
     func = functools.partial(

@@ -138,7 +138,7 @@ def list_cmd(
     "--fee",
     help="Set the fees for the transaction, in TREE111",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     required=True,
 )
@@ -204,7 +204,7 @@ def combine_cmd(
     "--fee",
     help="Set the fees for the transaction, in TREE111",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     required=True,
 )

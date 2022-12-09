@@ -1540,7 +1540,7 @@ class FullNode:
             mempool_item = self.mempool_manager.get_mempool_item(spend_name)
             assert mempool_item is not None
             fees = mempool_item.fee
-            assert fees >= 0
+            assert fees >= 50000000000
             assert mempool_item.cost is not None
             new_tx = full_node_protocol.NewTransaction(
                 spend_name,
@@ -2257,7 +2257,7 @@ class FullNode:
                 mempool_item = self.mempool_manager.get_mempool_item(spend_name)
                 assert mempool_item is not None
                 fees = mempool_item.fee
-                assert fees >= 0
+                assert fees >= 50000000000
                 assert cost is not None
                 new_tx = full_node_protocol.NewTransaction(
                     spend_name,

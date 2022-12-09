@@ -224,9 +224,9 @@ class Wallet:
         coin_announcements_to_assert: Optional[Set[bytes32]] = None,
         puzzle_announcements: Optional[Set[bytes]] = None,
         puzzle_announcements_to_assert: Optional[Set[bytes32]] = None,
-        fee=0,
+        fee=0.05,
     ) -> Program:
-        assert fee >= 0
+        assert fee >= 0.05
         condition_list = []
         if len(primaries) > 0:
             for primary in primaries:
@@ -304,7 +304,7 @@ class Wallet:
         self,
         amount: uint64,
         newpuzzlehash: bytes32,
-        fee: uint64 = uint64(0),
+        fee: uint64 = uint64(50000000000),
         origin_id: bytes32 = None,
         coins: Set[Coin] = None,
         primaries_input: Optional[List[AmountWithPuzzlehash]] = None,
@@ -455,7 +455,7 @@ class Wallet:
         self,
         amount: uint64,
         puzzle_hash: bytes32,
-        fee: uint64 = uint64(0),
+        fee: uint64 = uint64(50000000000),
         origin_id: bytes32 = None,
         coins: Set[Coin] = None,
         primaries: Optional[List[AmountWithPuzzlehash]] = None,

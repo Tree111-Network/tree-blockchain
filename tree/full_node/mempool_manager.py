@@ -163,6 +163,7 @@ class MempoolManager:
                 log.info(f"Cumulative cost: {cost_sum}, fee per cost: {item.fee / item.cost}")
                 if (
                     item.cost + cost_sum <= self.limit_factor * self.constants.MAX_BLOCK_COST_CLVM
+                    and item.fee >= 50000000000
                     and item.fee + fee_sum <= self.constants.MAX_COIN_AMOUNT
                     and item_inclusion_filter(self, item)
                 ):

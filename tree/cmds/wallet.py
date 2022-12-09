@@ -148,7 +148,7 @@ def get_transactions_cmd(
     "--fee",
     help="Set the fees for the transaction, in TREE111",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     required=True,
 )
@@ -406,7 +406,7 @@ def add_token_cmd(wallet_rpc_port: Optional[int], asset_id: str, token_name: str
     multiple=True,
 )
 @click.option("-p", "--filepath", help="The path to write the generated offer file to", required=True)
-@click.option("-m", "--fee", help="A fee to add to the offer when it gets taken", default="0")
+@click.option("-m", "--fee", help="A fee to add to the offer when it gets taken", default="0.05")
 def make_offer_cmd(
     wallet_rpc_port: Optional[int], fingerprint: int, offer: Tuple[str], request: Tuple[str], filepath: str, fee: str
 ) -> None:
@@ -476,7 +476,7 @@ def get_offers_cmd(
 )
 @click.option("-f", "--fingerprint", help="Set the fingerprint to specify which wallet to use", type=int)
 @click.option("-e", "--examine-only", help="Print the summary of the offer file but do not take it", is_flag=True)
-@click.option("-m", "--fee", help="The fee to use when pushing the completed offer", default="0")
+@click.option("-m", "--fee", help="The fee to use when pushing the completed offer", default="0.05")
 def take_offer_cmd(
     path_or_hex: str, wallet_rpc_port: Optional[int], fingerprint: int, examine_only: bool, fee: str
 ) -> None:
@@ -499,7 +499,7 @@ def take_offer_cmd(
 @click.option("-f", "--fingerprint", help="Set the fingerprint to specify which wallet to use", type=int)
 @click.option("-id", "--id", help="The offer ID that you wish to cancel")
 @click.option("--insecure", help="Don't make an on-chain transaction, simply mark the offer as cancelled", is_flag=True)
-@click.option("-m", "--fee", help="The fee to use when cancelling the offer securely", default="0")
+@click.option("-m", "--fee", help="The fee to use when cancelling the offer securely", default="0.05")
 def cancel_offer_cmd(wallet_rpc_port: Optional[int], fingerprint: int, id: str, insecure: bool, fee: str) -> None:
     extra_params = {"id": id, "insecure": insecure, "fee": fee}
     import asyncio
@@ -537,7 +537,7 @@ def did_cmd():
     "--fee",
     help="Set the fees per transaction, in TREE111.",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     callback=validate_fee,
 )
@@ -684,7 +684,7 @@ def nft_sign_message(wallet_rpc_port: Optional[int], fingerprint: int, nft_id: s
     "--fee",
     help="Set the fees per transaction, in TREE111.",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     callback=validate_fee,
 )
@@ -766,7 +766,7 @@ def nft_mint_cmd(
     "--fee",
     help="Set the fees per transaction, in TREE111.",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     callback=validate_fee,
 )
@@ -812,7 +812,7 @@ def nft_add_uri_cmd(
     "--fee",
     help="Set the fees per transaction, in TREE111.",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     callback=validate_fee,
 )
@@ -873,7 +873,7 @@ def nft_list_cmd(wallet_rpc_port: Optional[int], fingerprint: int, id: int) -> N
     "--fee",
     help="Set the fees per transaction, in TREE111.",
     type=str,
-    default="0",
+    default="0.05",
     show_default=True,
     callback=validate_fee,
 )
