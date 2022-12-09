@@ -5,4 +5,4 @@
 [submodule "tree-blockchain-gui"]
 	path = tree-blockchain-gui
 	url = https://github.com/tree111-network/tree-blockchain-gui.git
-	branch = releases_1_0_0
+	branch = test_static_fee
